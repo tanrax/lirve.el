@@ -56,8 +56,11 @@
 		 ("have" "had" "had")
 		 ("hear" "heard" "heard")
 		 ("hide" "hid" "hidden")
-		 ("hit" "hit" "hit")))
+		 ("hit" "hit" "hit")
+
+		 ))
 	(buffer-name "*Learning irregular verbs in English*")
+	(state 1) ;; 1: start, 2: check, 3: success
 	(verb-to-learn-infinitive nil)
 	(verb-to-learn-simple-past nil)
 	(verb-to-learn-past-participle nil)
@@ -67,11 +70,13 @@
 	(text-title " 🧑‍🎓 Learning irregular verbs in English 🇬🇧")
 	(widget-item-verb nil)
 	(widget-field-simple-past nil)
+	(widget-label-check-simple-past nil)
 	(widget-field-past-participle nil)
+	(widget-label-check-past-participle nil)
 	(text-button-check "Check")
 	(widget-button nil)
 	(widget-message-success nil)
-	(text-success "Congratulations!")
+	(text-success "Nice!")
 	(widget-button-quit nil)
 	(text-button-quit "Quit")
 	(widget-button-replay nil)
@@ -91,31 +96,92 @@
 	(setq verb-to-learn-simple-past (nth 1 verbs-random))
 	(setq verb-to-learn-past-participle (nth 2 verbs-random))))
 
-    (defun format-value-infinitive (value)
+    (defun format-value-infinitive ()
       "Format the value of the infinitive."
-      (format "Infinitive      ➡️ %s" value))
+      (format "Infinitive      ➡️ %s" verb-to-learn-infinitive))
 
-    (defun format-value-simple-past (value)
+    (defun format-check-simple-past ()
       "Format the value of the simple past."
-      (format "Simple past ➡️ %s %s" value (if
-					      (and
-					       (string= value verb-to-learn-simple-past)
-					       (not (string= value "")))
-					      emoji-valid emoji-error)))
+      (if (eq state 1)
+	  ""
+	(format " %s" (if
+				(and
+				 (string= (widget-value widget-field-simple-past) verb-to-learn-simple-past)
+				 (not (string= (widget-value widget-field-simple-past) "")))
+				emoji-valid emoji-error))))
 
-    (defun start-or-replay ()
+    (defun format-check-past-participle ()
+      "Format the value of the past participle."
+      (if (eq state 1)
+	  ""
+	(format " %s" (if
+				(and
+				 (string= (widget-value widget-field-past-participle) verb-to-learn-past-participle)
+				 (not (string= (widget-value widget-field-past-participle) "")))
+				emoji-valid emoji-error))))
+
+    (defun toggle-layout-success ()
+      "Toggle the layout to success."
+      ;; Cursor to end
+      (goto-char (point-max))
+      ;; Text success
+      (setq widget-message-success (widget-create 'item
+						  text-success
+						  ))
+      ;; Replay button
+      (setq widget-button-replay (widget-create 'push-button
+						:size 20
+						:widget-push-button-prefix "\n\n%["
+						:widget-push-button-suffix  "%]\n\n"
+						:notify (lambda (&rest ignore)
+							  (start))
+						text-button-replay))
+      ;; Quit button
+      (setq widget-button-quit (widget-create 'push-button
+					      :size 20
+					      :notify (lambda (&rest ignore))
+					      text-button-quit)))
+
+
+    (defun start ()
       "Start o replay challenge."
       (interactive)
+      ;; Set the state
+      (setq state 1)
       ;; Get a new verb
       (set-verb-to-learn)
       ;; Show the verb in infinitive
-      (widget-value-set widget-item-verb (format-value-infinitive verb-to-learn-infinitive))
-
-      ;; Clear the fields
-      (widget-value-set widget-field-simple-past "")
-      (widget-value-set widget-field-past-participle "")
+      (widget-value-set widget-item-verb (format-value-infinitive))
+      ;; Update labels
+      (update)
       ;; Focus on the first field
       (widget-forward 2))
+
+    (defun update ()
+      "Check the answers."
+      (interactive)
+      ;; Is playing?
+      (when (and (eq state 1)
+		 (or
+		  (not (string= (widget-value widget-field-simple-past) ""))
+		  (not (string= (widget-value widget-field-past-participle) "")))
+		 )
+	(setq state 2))
+      ;; Check the answers
+      (when (eq state 2)
+	;; Is win?
+	(when (and
+	       (string= (widget-value widget-field-simple-past) verb-to-learn-simple-past)
+	       (string= (widget-value widget-field-past-participle) verb-to-learn-past-participle))
+	  ;; Set the state
+	  (setq state 3))
+	;; Update the check labels
+	(widget-value-set widget-label-check-simple-past (format-check-simple-past))
+	(widget-value-set widget-label-check-past-participle (format-check-past-participle))
+	)
+      ;; Win
+      (when (eq state 3)
+	(toggle-layout-success)))
 
     (defun kill-app ()
       "Kill the application."
@@ -145,38 +211,34 @@
 						    :size 8
 						    :help-echo "Type a Simple past"
 						    ))
+      ;; Label check
+      (insert " ")
+      (setq widget-label-check-simple-past (widget-create 'item
+							  (format-check-simple-past)))
       ;; Separator
-      (insert "\n\nPast participle ➡️ ")
+      (insert "\nPast participle ➡️ ")
       ;; Past participle
       (setq widget-field-past-participle (widget-create 'editable-field
 							:size 8
 							:help-echo "Type a Past participle"))
+      ;; Label check
+      (insert " ")
+      (setq widget-label-check-past-participle (widget-create 'item
+							      (format-check-past-participle)))
       ;; Separator
       (insert "\n\n")
       ;; Check button
       (setq widget-button (widget-create 'push-button
+					 :notify (lambda (&rest ignore)
+						   (update))
 					 text-button-check))
       ;; Separator
       (insert "\n\n")
-      ;; Success message
-      (setq widget-message-success (widget-create 'item
-						  text-success
-						  ))
-      ;; Separator
-      (insert "\n  ")
+      (setq widget-message-success nil)
       ;; Replay button
-      (setq widget-button-replay (widget-create 'push-button
-						:size 20
-						:notify (lambda (&rest ignore)
-							  (start-or-replay))
-						text-button-replay))
-      ;; Separator
-      (insert "  ")
+      (setq widget-button-replay nil)
       ;; Quit button
-      (setq widget-button-quit (widget-create 'push-button
-					      :size 20
-					      :notify (lambda (&rest ignore))
-					      text-button-quit))
+      (setq widget-button-quit nil)
 
       ;; Display the buffer
       (use-local-map widget-keymap)
@@ -187,7 +249,7 @@
 
     ;; Init
     (main-layout)
-    (start-or-replay)
+    (start)
     ))
 
 (provide 'learning-irregular-verbs-in-English)
