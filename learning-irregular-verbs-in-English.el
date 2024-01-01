@@ -60,7 +60,7 @@
 
 		 ))
 	(buffer-name "*Learning irregular verbs in English*")
-	(state 1) ;; 1: start, 2: check, 3: success
+	(state 1) ;; 1: start, 2: playing (before first check), 3: win
 	(verb-to-learn-infinitive nil)
 	(verb-to-learn-simple-past nil)
 	(verb-to-learn-past-participle nil)
@@ -74,11 +74,14 @@
 	(widget-field-past-participle nil)
 	(widget-label-check-past-participle nil)
 	(text-button-check "Check")
-	(widget-button nil)
+	(widget-button-check nil)
 	(widget-message-success nil)
+	(widget-item-space-before-success nil)
 	(text-success "Nice!")
+	(widget-item-space-after-success nil)
 	(widget-button-quit nil)
 	(text-button-quit "Quit")
+	(widget-item-space-between-buttons nil)
 	(widget-button-replay nil)
 	(text-button-replay "New challenge")
 	)
@@ -88,6 +91,11 @@
       (require 'wid-edit))
 
     ;; Functions
+
+    (defun kill-app ()
+      "Kill the application."
+      (interactive)
+      (kill-buffer buffer-name))
 
     (defun set-verb-to-learn ()
       "Set the verb to learn."
@@ -122,25 +130,53 @@
 
     (defun toggle-layout-success ()
       "Toggle the layout to success."
-      ;; Cursor to end
-      (goto-char (point-max))
-      ;; Text success
-      (setq widget-message-success (widget-create 'item
-						  text-success
-						  ))
-      ;; Replay button
-      (setq widget-button-replay (widget-create 'push-button
-						:size 20
-						:widget-push-button-prefix "\n\n%["
-						:widget-push-button-suffix  "%]\n\n"
-						:notify (lambda (&rest ignore)
-							  (start))
-						text-button-replay))
-      ;; Quit button
-      (setq widget-button-quit (widget-create 'push-button
-					      :size 20
-					      :notify (lambda (&rest ignore))
-					      text-button-quit)))
+      (if (eq state 3)
+	  (progn
+	    ;; Cursor to end
+	    (goto-char (point-max))
+	    ;; Remove check button
+	    (widget-delete widget-button-check)
+	    (setq widget-button-check nil)
+	    ;; Text success
+	    (setq widget-item-space-before-success (widget-create 'item
+								  ""))
+	    (setq widget-message-success (widget-create 'item
+							text-success
+							))
+	    (setq widget-item-space-after-success (widget-create 'item
+								 "\n"))
+	    ;; Replay button
+	    (setq widget-button-replay (widget-create 'push-button
+						      :size 20
+						      :notify (lambda (&rest ignore)
+								(replay))
+						      text-button-replay))
+	    ;; Space
+	    (setq widget-item-space-between-buttons (widget-create 'item
+								   "\n"))
+	    ;; Quit button
+	    (setq widget-button-quit (widget-create 'push-button
+						    :size 20
+						    :notify (lambda (&rest ignore)
+							      (kill-app))
+						    text-button-quit))
+	    (widget-backward 2)
+	    )
+	(progn
+	  (when (not (eq widget-item-space-before-success nil)) (widget-delete widget-item-space-before-success))
+	  (when (not (eq widget-message-success nil)) (widget-delete widget-message-success))
+	  (when (not (eq widget-item-space-after-success nil)) (widget-delete widget-item-space-after-success))
+	  (when (not (eq widget-button-replay nil)) (widget-delete widget-button-replay))
+	  (when (not (eq widget-item-space-between-buttons nil)) (widget-delete widget-item-space-between-buttons))
+	  (when (not (eq widget-button-quit nil)) (widget-delete widget-button-quit))
+	  )))
+
+    (defun make-button-check ()
+      "Make the button check."
+      (setq widget-button-check (widget-create 'push-button
+					 :notify (lambda (&rest ignore)
+						   (update))
+					 text-button-check)))
 
 
     (defun start ()
@@ -152,10 +188,21 @@
       (set-verb-to-learn)
       ;; Show the verb in infinitive
       (widget-value-set widget-item-verb (format-value-infinitive))
+      ;; Reset button check
+      (when (eq widget-button-check nil) (make-button-check))
+      ;; Clear the fields
+      (widget-value-set widget-field-simple-past "")
+      (widget-value-set widget-label-check-simple-past "")
+      (widget-value-set widget-field-past-participle "")
+      (widget-value-set widget-label-check-past-participle "")
       ;; Update labels
-      (update)
-      ;; Focus on the first field
-      (widget-forward 2))
+      (update))
+
+    (defun replay ()
+      "Replay the challenge."
+      (interactive)
+      (start)
+      (widget-backward 1))
 
     (defun update ()
       "Check the answers."
@@ -179,14 +226,8 @@
 	(widget-value-set widget-label-check-simple-past (format-check-simple-past))
 	(widget-value-set widget-label-check-past-participle (format-check-past-participle))
 	)
-      ;; Win
-      (when (eq state 3)
-	(toggle-layout-success)))
-
-    (defun kill-app ()
-      "Kill the application."
-      (interactive)
-      (kill-buffer buffer-name))
+      ;; Update the success layout if needed
+      (toggle-layout-success))
 
     (defun main-layout ()
       "Make widgets for the main layout."
@@ -226,20 +267,9 @@
       (setq widget-label-check-past-participle (widget-create 'item
 							      (format-check-past-participle)))
       ;; Separator
-      (insert "\n\n")
+      (insert "\n")
       ;; Check button
-      (setq widget-button (widget-create 'push-button
-					 :notify (lambda (&rest ignore)
-						   (update))
-					 text-button-check))
-      ;; Separator
-      (insert "\n\n")
-      (setq widget-message-success nil)
-      ;; Replay button
-      (setq widget-button-replay nil)
-      ;; Quit button
-      (setq widget-button-quit nil)
-
+      (make-button-check)
       ;; Display the buffer
       (use-local-map widget-keymap)
       (widget-setup))
@@ -250,6 +280,7 @@
     ;; Init
     (main-layout)
     (start)
+    (widget-backward 1)
     ))
 
 (provide 'learning-irregular-verbs-in-English)
