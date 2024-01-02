@@ -102,7 +102,7 @@
 						     ("smell" "smelt" "smelt")
 						     ("speak" "spoke" "spoken")
 						     ("spend" "spent" "spent")
-						     ("spill" "spelt" "spelt")
+						     ("spell" "spelt" "spelt")
 						     ("spit" "spit" "spit")
 						     ("stand" "stood" "stood")
 						     ("steal" "stole" "stolen")
