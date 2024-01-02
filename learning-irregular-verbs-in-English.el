@@ -345,4 +345,3 @@
 (provide 'learning-irregular-verbs-in-English)
 
 ;;; learning-irregular-verbs-in-English.el ends here
-(learning-irregular-verbs-in-English)
