@@ -240,8 +240,7 @@
 
 
 (defun learning-irregular-verbs-in-English--start ()
-  "Start o replay challenge."
-  (interactive)
+  "Start challenge."
   ;; Set the learning-irregular-verbs-in-English--state
   (setq learning-irregular-verbs-in-English--state 1)
   ;; Get a new verb
@@ -290,7 +289,6 @@
 
 (defun learning-irregular-verbs-in-English--main-layout ()
   "Make widgets for the main layout."
-  (interactive)
   ;; Create the buffer
   (switch-to-buffer learning-irregular-verbs-in-English--buffer-name)
   ;; Clear the buffer
