@@ -14,13 +14,14 @@
 (defun learning-irregular-verbs-in-English ()
   "Application to learn and review irregular verbs in English."
   (interactive)
-  (let ((verbs '(("be" "was/were" "been")
+  (let ((learning-irregular-verbs-in-English--verbs '(("be" "was/were" "been")
 		 ("beat" "beat" "beaten")
 		 ("become" "became" "become")
 		 ("begin" "began" "begun")
 		 ("bend" "bent" "bent")
 		 ("bet" "bet" "bet")
 		 ("bite" "bit" "bitten")
+		 ("bleed" "bled" "bled")
 		 ("blow" "blew" "blown")
 		 ("break" "broke" "broken")
 		 ("bring" "brought" "brought")
@@ -57,10 +58,64 @@
 		 ("hear" "heard" "heard")
 		 ("hide" "hid" "hidden")
 		 ("hit" "hit" "hit")
-
-		 ))
+		 ("hold" "held" "held")
+		 ("hurt" "hurt" "hurt")
+		 ("keep" "kept" "kept")
+		 ("know" "knew" "known")
+		 ("lay" "laid" "laid")
+		 ("lead" "led" "led")
+		 ("learn" "learnt" "learnt")
+		 ("leave" "left" "left")
+		 ("lend" "lent" "lent")
+		 ("let" "let" "let")
+		 ("lie" "lay" "lain")
+		 ("light" "lit" "lit")
+		 ("lose" "lost" "lost")
+		 ("make" "made" "made")
+		 ("mean" "meant" "meant")
+		 ("meet" "met" "met")
+		 ("pay" "paid" "paid")
+		 ("put" "put" "put")
+		 ("read" "read" "read")
+		 ("ride" "rode" "ridden")
+		 ("ring" "rang" "rung")
+		 ("rise" "rose" "risen")
+		 ("run" "ran" "run")
+		 ("say" "said" "said")
+		 ("see" "saw" "seen")
+		 ("sell" "sold" "sold")
+		 ("send" "sent" "sent")
+		 ("set" "set" "set")
+		 ("shake" "shook" "shaken")
+		 ("shine" "shone" "shone")
+		 ("shoot" "shot" "shot")
+		 ("show" "showed" "shown")
+		 ("shut" "shut" "shut")
+		 ("sing" "sang" "sung")
+		 ("sink" "sank" "sunk")
+		 ("sit" "sat" "sat")
+		 ("sleep" "slept" "slept")
+		 ("smell" "smelt" "smelt")
+		 ("speak" "spoke" "spoken")
+		 ("spend" "spent" "spent")
+		 ("spill" "spelt" "spelt")
+		 ("spit" "spit" "spit")
+		 ("stand" "stood" "stood")
+		 ("steal" "stole" "stolen")
+		 ("swim" "swam" "swum")
+		 ("take" "took" "taken")
+		 ("teach" "taught" "taught")
+		 ("tear" "tore" "torn")
+		 ("tell" "told" "told")
+		 ("think" "thought" "thought")
+		 ("throw" "threw" "thrown")
+		 ("understand" "understood" "understood")
+		 ("wake" "woke" "woken")
+		 ("wear" "wore" "worn")
+		 ("win" "won" "won")
+		 ("write" "wrote" "written")))
 	(buffer-name "*Learning irregular verbs in English*")
-	(state 1) ;; 1: start, 2: playing (before first check), 3: win
+	(state 1) ;; 1: start, 2: playing (before first check), 3: win (show success layout)
 	(verb-to-learn-infinitive nil)
 	(verb-to-learn-simple-past nil)
 	(verb-to-learn-past-participle nil)
@@ -83,8 +138,7 @@
 	(text-button-quit "Quit")
 	(widget-item-space-between-buttons nil)
 	(widget-button-replay nil)
-	(text-button-replay "New challenge")
-	)
+	(text-button-replay "New challenge"))
     ;; Imports
     (require 'widget)
     (eval-when-compile
@@ -97,9 +151,15 @@
       (interactive)
       (kill-buffer buffer-name))
 
+    (defun value-field-simple-past ()
+      (if (not (eq widget-field-simple-past nil)) (widget-value widget-field-simple-past) ""))
+
+    (defun value-field-past-participle ()
+      (if (not (eq widget-field-past-participle nil)) (widget-value widget-field-past-participle) ""))
+
     (defun set-verb-to-learn ()
       "Set the verb to learn."
-      (let ((verbs-random (nth (random (length verbs)) verbs)))
+      (let ((verbs-random (nth (random (length learning-irregular-verbs-in-English--verbs)) learning-irregular-verbs-in-English--verbs)))
 	(setq verb-to-learn-infinitive (nth 0 verbs-random))
 	(setq verb-to-learn-simple-past (nth 1 verbs-random))
 	(setq verb-to-learn-past-participle (nth 2 verbs-random))))
@@ -114,8 +174,8 @@
 	  ""
 	(format " %s" (if
 				(and
-				 (string= (widget-value widget-field-simple-past) verb-to-learn-simple-past)
-				 (not (string= (widget-value widget-field-simple-past) "")))
+				 (string= (value-field-simple-past) verb-to-learn-simple-past)
+				 (not (string= (value-field-simple-past) "")))
 				emoji-valid emoji-error))))
 
     (defun format-check-past-participle ()
@@ -124,8 +184,8 @@
 	  ""
 	(format " %s" (if
 				(and
-				 (string= (widget-value widget-field-past-participle) verb-to-learn-past-participle)
-				 (not (string= (widget-value widget-field-past-participle) "")))
+				 (string= (value-field-past-participle) verb-to-learn-past-participle)
+				 (not (string= (value-field-past-participle) "")))
 				emoji-valid emoji-error))))
 
     (defun toggle-layout-success ()
@@ -210,22 +270,21 @@
       ;; Is playing?
       (when (and (eq state 1)
 		 (or
-		  (not (string= (widget-value widget-field-simple-past) ""))
-		  (not (string= (widget-value widget-field-past-participle) "")))
+		  (not (string= (value-field-simple-past) ""))
+		  (not (string= (value-field-past-participle) "")))
 		 )
 	(setq state 2))
       ;; Check the answers
       (when (eq state 2)
 	;; Is win?
 	(when (and
-	       (string= (widget-value widget-field-simple-past) verb-to-learn-simple-past)
-	       (string= (widget-value widget-field-past-participle) verb-to-learn-past-participle))
+	       (string= (value-field-simple-past) verb-to-learn-simple-past)
+	       (string= (value-field-past-participle) verb-to-learn-past-participle))
 	  ;; Set the state
 	  (setq state 3))
 	;; Update the check labels
 	(widget-value-set widget-label-check-simple-past (format-check-simple-past))
-	(widget-value-set widget-label-check-past-participle (format-check-past-participle))
-	)
+	(widget-value-set widget-label-check-past-participle (format-check-past-participle)))
       ;; Update the success layout if needed
       (toggle-layout-success))
 
@@ -280,8 +339,7 @@
     ;; Init
     (main-layout)
     (start)
-    (widget-backward 1)
-    ))
+    (widget-backward 1)))
 
 (provide 'learning-irregular-verbs-in-English)
 
