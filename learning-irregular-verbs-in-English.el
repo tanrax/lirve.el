@@ -239,7 +239,7 @@
 										learning-irregular-verbs-in-English--text-button-check)))
 
 
-(defun start ()
+(defun learning-irregular-verbs-in-English--start ()
   "Start o replay challenge."
   (interactive)
   ;; Set the learning-irregular-verbs-in-English--state
@@ -261,7 +261,7 @@
 (defun replay ()
   "Replay the challenge."
   (interactive)
-  (start)
+  (learning-irregular-verbs-in-English--start)
   (widget-backward 1))
 
 (defun update ()
@@ -288,7 +288,7 @@
   ;; Update the success layout if needed
   (learning-irregular-verbs-in-English--toggle-layout-success))
 
-(defun main-layout ()
+(defun learning-irregular-verbs-in-English--main-layout ()
   "Make widgets for the main layout."
   (interactive)
   ;; Create the buffer
@@ -340,8 +340,8 @@
 (defun learning-irregular-verbs-in-English ()
   "Application to learn and review irregular verbs in English."
   (interactive)
-  (main-layout)
-  (start)
+  (learning-irregular-verbs-in-English--main-layout)
+  (learning-irregular-verbs-in-English--start)
   (widget-backward 1))
 
 (provide 'learning-irregular-verbs-in-English)
