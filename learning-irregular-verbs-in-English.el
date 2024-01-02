@@ -14,7 +14,7 @@
 (defun learning-irregular-verbs-in-English ()
   "Application to learn and review irregular verbs in English."
   (interactive)
-  (let ((learning-irregular-verbs-in-English--verbs '(
+  (let* ((learning-irregular-verbs-in-English--verbs '(
 						      ("beat" "beat" "beaten")
 						      ("become" "became" "become")
 						      ("begin" "began" "begun")
