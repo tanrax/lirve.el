@@ -377,7 +377,7 @@
   (interactive)
   (lire--main-layout)
   (lire--start)
-  (widget-backward 3))
+  (widget-backward 4))
 
 (provide 'learning-irregular-verbs-in-English)
 
