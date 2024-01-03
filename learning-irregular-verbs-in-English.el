@@ -18,279 +18,312 @@
 
 ;; Variables
 
-(defvar learning-irregular-verbs-in-English--verbs '(
-						     ("beat" "beat" "beaten")
-						     ("become" "became" "become")
-						     ("begin" "began" "begun")
-						     ("bend" "bent" "bent")
-						     ("bet" "bet" "bet")
-						     ("bite" "bit" "bitten")
-						     ("bleed" "bled" "bled")
-						     ("blow" "blew" "blown")
-						     ("break" "broke" "broken")
-						     ("bring" "brought" "brought")
-						     ("build" "built" "built")
-						     ("burn" "burnt" "burnt")
-						     ("buy" "bought" "bought")
-						     ("catch" "caught" "caught")
-						     ("choose" "chose" "chosen")
-						     ("come" "came" "come")
-						     ("cost" "cost" "cost")
-						     ("cut" "cut" "cut")
-						     ("dig" "dug" "dug")
-						     ("do" "did" "done")
-						     ("draw" "drew" "drawn")
-						     ("dream" "dreamt" "dreamt")
-						     ("drink" "drank" "drunk")
-						     ("drive" "drove" "driven")
-						     ("eat" "ate" "eaten")
-						     ("fall" "fell" "fallen")
-						     ("feed" "fed" "fed")
-						     ("feel" "felt" "felt")
-						     ("fight" "fought" "fought")
-						     ("find" "found" "found")
-						     ("fly" "flew" "flown")
-						     ("forget" "forgot" "forgotten")
-						     ("forgive" "forgave" "forgiven")
-						     ("freeze" "froze" "frozen")
-						     ("get" "got" "got")
-						     ("give" "gave" "given")
-						     ("go" "went" "gone")
-						     ("grow" "grew" "grown")
-						     ("hang" "hung" "hung")
-						     ("have" "had" "had")
-						     ("hear" "heard" "heard")
-						     ("hide" "hid" "hidden")
-						     ("hit" "hit" "hit")
-						     ("hold" "held" "held")
-						     ("hurt" "hurt" "hurt")
-						     ("keep" "kept" "kept")
-						     ("know" "knew" "known")
-						     ("lay" "laid" "laid")
-						     ("lead" "led" "led")
-						     ("learn" "learnt" "learnt")
-						     ("leave" "left" "left")
-						     ("lend" "lent" "lent")
-						     ("let" "let" "let")
-						     ("lie" "lay" "lain")
-						     ("light" "lit" "lit")
-						     ("lose" "lost" "lost")
-						     ("make" "made" "made")
-						     ("mean" "meant" "meant")
-						     ("meet" "met" "met")
-						     ("pay" "paid" "paid")
-						     ("put" "put" "put")
-						     ("read" "read" "read")
-						     ("ride" "rode" "ridden")
-						     ("ring" "rang" "rung")
-						     ("rise" "rose" "risen")
-						     ("run" "ran" "run")
-						     ("say" "said" "said")
-						     ("see" "saw" "seen")
-						     ("sell" "sold" "sold")
-						     ("send" "sent" "sent")
-						     ("set" "set" "set")
-						     ("shake" "shook" "shaken")
-						     ("shine" "shone" "shone")
-						     ("shoot" "shot" "shot")
-						     ("show" "showed" "shown")
-						     ("shut" "shut" "shut")
-						     ("sing" "sang" "sung")
-						     ("sink" "sank" "sunk")
-						     ("sit" "sat" "sat")
-						     ("sleep" "slept" "slept")
-						     ("smell" "smelt" "smelt")
-						     ("speak" "spoke" "spoken")
-						     ("spend" "spent" "spent")
-						     ("spell" "spelt" "spelt")
-						     ("spit" "spit" "spit")
-						     ("stand" "stood" "stood")
-						     ("steal" "stole" "stolen")
-						     ("swim" "swam" "swum")
-						     ("take" "took" "taken")
-						     ("teach" "taught" "taught")
-						     ("tear" "tore" "torn")
-						     ("tell" "told" "told")
-						     ("think" "thought" "thought")
-						     ("throw" "threw" "thrown")
-						     ("understand" "understood" "understood")
-						     ("wake" "woke" "woken")
-						     ("wear" "wore" "worn")
-						     ("win" "won" "won")
-						     ("write" "wrote" "written")))
-;; learning-irregular-verbs-in-English
-(defvar learning-irregular-verbs-in-English--buffer-name "*Learning irregular verbs in English*")
-(defvar learning-irregular-verbs-in-English--state 1) ;; 1: start, 2: playing (before first check), 3: win (show success layout)
-(defvar learning-irregular-verbs-in-English--verb-to-learn-infinitive nil)
-(defvar learning-irregular-verbs-in-English--verb-to-learn-simple-past nil)
-(defvar learning-irregular-verbs-in-English--verb-to-learn-past-participle nil)
-(defvar learning-irregular-verbs-in-English--emoji-valid "✅")
-(defvar learning-irregular-verbs-in-English--emoji-error "👎")
-(defvar learning-irregular-verbs-in-English--widget-title nil)
-(defvar learning-irregular-verbs-in-English--text-title " 🧑‍🎓 Learning irregular verbs in English 🇬🇧")
-(defvar learning-irregular-verbs-in-English--widget-item-verb nil)
-(defvar learning-irregular-verbs-in-English--widget-field-simple-past nil)
-(defvar learning-irregular-verbs-in-English--widget-label-check-simple-past nil)
-(defvar learning-irregular-verbs-in-English--widget-field-past-participle nil)
-(defvar learning-irregular-verbs-in-English--widget-label-check-past-participle nil)
-(defvar learning-irregular-verbs-in-English--text-button-check "Check")
-(defvar learning-irregular-verbs-in-English--widget-button-check nil)
-(defvar learning-irregular-verbs-in-English--widget-message-success nil)
-(defvar learning-irregular-verbs-in-English--widget-item-space-before-success nil)
-(defvar learning-irregular-verbs-in-English--text-success "Nice!")
-(defvar learning-irregular-verbs-in-English--widget-item-space-after-success nil)
-(defvar learning-irregular-verbs-in-English--widget-button-quit nil)
-(defvar learning-irregular-verbs-in-English--text-button-quit "Quit")
-(defvar learning-irregular-verbs-in-English--widget-item-space-between-buttons nil)
-(defvar learning-irregular-verbs-in-English--widget-button-replay nil)
-(defvar learning-irregular-verbs-in-English--text-button-replay "New challenge")
+(defvar lire--verbs '(
+		      ("beat" "beat" "beaten")
+		      ("become" "became" "become")
+		      ("begin" "began" "begun")
+		      ("bend" "bent" "bent")
+		      ("bet" "bet" "bet")
+		      ("bite" "bit" "bitten")
+		      ("bleed" "bled" "bled")
+		      ("blow" "blew" "blown")
+		      ("break" "broke" "broken")
+		      ("bring" "brought" "brought")
+		      ("build" "built" "built")
+		      ("burn" "burnt" "burnt")
+		      ("buy" "bought" "bought")
+		      ("catch" "caught" "caught")
+		      ("choose" "chose" "chosen")
+		      ("come" "came" "come")
+		      ("cost" "cost" "cost")
+		      ("cut" "cut" "cut")
+		      ("dig" "dug" "dug")
+		      ("do" "did" "done")
+		      ("draw" "drew" "drawn")
+		      ("dream" "dreamt" "dreamt")
+		      ("drink" "drank" "drunk")
+		      ("drive" "drove" "driven")
+		      ("eat" "ate" "eaten")
+		      ("fall" "fell" "fallen")
+		      ("feed" "fed" "fed")
+		      ("feel" "felt" "felt")
+		      ("fight" "fought" "fought")
+		      ("find" "found" "found")
+		      ("fly" "flew" "flown")
+		      ("forget" "forgot" "forgotten")
+		      ("forgive" "forgave" "forgiven")
+		      ("freeze" "froze" "frozen")
+		      ("get" "got" "got")
+		      ("give" "gave" "given")
+		      ("go" "went" "gone")
+		      ("grow" "grew" "grown")
+		      ("hang" "hung" "hung")
+		      ("have" "had" "had")
+		      ("hear" "heard" "heard")
+		      ("hide" "hid" "hidden")
+		      ("hit" "hit" "hit")
+		      ("hold" "held" "held")
+		      ("hurt" "hurt" "hurt")
+		      ("keep" "kept" "kept")
+		      ("know" "knew" "known")
+		      ("lay" "laid" "laid")
+		      ("lead" "led" "led")
+		      ("learn" "learnt" "learnt")
+		      ("leave" "left" "left")
+		      ("lend" "lent" "lent")
+		      ("let" "let" "let")
+		      ("lie" "lay" "lain")
+		      ("light" "lit" "lit")
+		      ("lose" "lost" "lost")
+		      ("make" "made" "made")
+		      ("mean" "meant" "meant")
+		      ("meet" "met" "met")
+		      ("pay" "paid" "paid")
+		      ("put" "put" "put")
+		      ("read" "read" "read")
+		      ("ride" "rode" "ridden")
+		      ("ring" "rang" "rung")
+		      ("rise" "rose" "risen")
+		      ("run" "ran" "run")
+		      ("say" "said" "said")
+		      ("see" "saw" "seen")
+		      ("sell" "sold" "sold")
+		      ("send" "sent" "sent")
+		      ("set" "set" "set")
+		      ("shake" "shook" "shaken")
+		      ("shine" "shone" "shone")
+		      ("shoot" "shot" "shot")
+		      ("show" "showed" "shown")
+		      ("shut" "shut" "shut")
+		      ("sing" "sang" "sung")
+		      ("sink" "sank" "sunk")
+		      ("sit" "sat" "sat")
+		      ("sleep" "slept" "slept")
+		      ("smell" "smelt" "smelt")
+		      ("speak" "spoke" "spoken")
+		      ("spend" "spent" "spent")
+		      ("spell" "spelt" "spelt")
+		      ("spit" "spit" "spit")
+		      ("stand" "stood" "stood")
+		      ("steal" "stole" "stolen")
+		      ("swim" "swam" "swum")
+		      ("take" "took" "taken")
+		      ("teach" "taught" "taught")
+		      ("tear" "tore" "torn")
+		      ("tell" "told" "told")
+		      ("think" "thought" "thought")
+		      ("throw" "threw" "thrown")
+		      ("understand" "understood" "understood")
+		      ("wake" "woke" "woken")
+		      ("wear" "wore" "worn")
+		      ("win" "won" "won")
+		      ("write" "wrote" "written")))
+;; lire
+(defvar lire--buffer-name "*Learning irregular verbs in English*")
+(defvar lire--state 1) ;; 1: lire--start, 2: playing (before first check), 3: win (show success layout)
+(defvar lire--verb-to-learn-infinitive nil)
+(defvar lire--verb-to-learn-simple-past nil)
+(defvar lire--verb-to-learn-past-participle nil)
+(defvar lire--emoji-valid "✅")
+(defvar lire--emoji-error "👎")
+(defvar lire--widget-title nil)
+(defvar lire--text-title " 🧑‍🎓 Learning irregular verbs in English 🇬🇧")
+(defvar lire--widget-item-verb nil)
+(defvar lire--widget-field-simple-past nil)
+(defvar lire--widget-label-check-simple-past nil)
+(defvar lire--widget-field-past-participle nil)
+(defvar lire--widget-label-check-past-participle nil)
+(defvar lire--text-button-check "Check")
+(defvar lire--widget-button-check nil)
+(defvar lire--widget-item-space-before-check nil)
+(defvar lire--text-button-show-solution "Don't know")
+(defvar lire--widget-button-show-solution nil)
+(defvar lire--widget-message-success nil)
+(defvar lire--widget-item-space-before-success nil)
+(defvar lire--text-success "Nice!")
+(defvar lire--text-fail "Next time you will do better")
+(defvar lire--is-resolve t)
+(defvar lire--widget-item-space-after-success nil)
+(defvar lire--widget-button-quit nil)
+(defvar lire--text-button-quit "Quit")
+(defvar lire--widget-item-space-between-buttons nil)
+(defvar lire--widget-button-lire--replay nil)
+(defvar lire--text-button-lire--replay "New challenge")
 
 ;; Functions
 
-(defun learning-irregular-verbs-in-English--kill-app ()
+(defun lire--kill-app ()
   "Kill the application."
-  (kill-buffer learning-irregular-verbs-in-English--buffer-name))
+  (kill-buffer lire--buffer-name))
 
-(defun learning-irregular-verbs-in-English--value-field-simple-past ()
-  (if (not (eq learning-irregular-verbs-in-English--widget-field-simple-past nil)) (widget-value learning-irregular-verbs-in-English--widget-field-simple-past) ""))
+(defun lire--value-field-simple-past ()
+  (if (not (eq lire--widget-field-simple-past nil)) (widget-value lire--widget-field-simple-past) ""))
 
-(defun learning-irregular-verbs-in-English--value-field-past-participle ()
-  (if (not (eq learning-irregular-verbs-in-English--widget-field-past-participle nil)) (widget-value learning-irregular-verbs-in-English--widget-field-past-participle) ""))
+(defun lire--value-field-past-participle ()
+  (if (not (eq lire--widget-field-past-participle nil)) (widget-value lire--widget-field-past-participle) ""))
 
-(defun learning-irregular-verbs-in-English--set-verb-to-learn ()
+(defun lire--set-verb-to-learn ()
   "Set the verb to learn."
-  (let ((verbs-random (nth (random (length learning-irregular-verbs-in-English--verbs)) learning-irregular-verbs-in-English--verbs)))
-    (setq learning-irregular-verbs-in-English--verb-to-learn-infinitive (nth 0 verbs-random))
-    (setq learning-irregular-verbs-in-English--verb-to-learn-simple-past (nth 1 verbs-random))
-    (setq learning-irregular-verbs-in-English--verb-to-learn-past-participle (nth 2 verbs-random))))
+  (let ((verbs-random (nth (random (length lire--verbs)) lire--verbs)))
+    (setq lire--verb-to-learn-infinitive (nth 0 verbs-random))
+    (setq lire--verb-to-learn-simple-past (nth 1 verbs-random))
+    (setq lire--verb-to-learn-past-participle (nth 2 verbs-random))))
 
-(defun learning-irregular-verbs-in-English--format-value-infinitive ()
+(defun lire--format-value-infinitive ()
   "Format the value of the infinitive."
-  (format "Infinitive      ➡️ %s" learning-irregular-verbs-in-English--verb-to-learn-infinitive))
+  (format "Infinitive      ➡️ %s" lire--verb-to-learn-infinitive))
 
-(defun learning-irregular-verbs-in-English--format-check-simple-past ()
+(defun lire--format-check-simple-past ()
   "Format the value of the simple past."
-  (if (eq learning-irregular-verbs-in-English--state 1)
+  (if (eq lire--state 1)
       ""
     (format " %s" (if
 		      (and
-		       (string= (learning-irregular-verbs-in-English--value-field-simple-past) learning-irregular-verbs-in-English--verb-to-learn-simple-past)
-		       (not (string= (learning-irregular-verbs-in-English--value-field-simple-past) "")))
-		      learning-irregular-verbs-in-English--emoji-valid learning-irregular-verbs-in-English--emoji-error))))
+		       (string= (lire--value-field-simple-past) lire--verb-to-learn-simple-past)
+		       (not (string= (lire--value-field-simple-past) "")))
+		      lire--emoji-valid lire--emoji-error))))
 
-(defun learning-irregular-verbs-in-English--format-check-past-participle ()
+(defun lire--format-check-past-participle ()
   "Format the value of the past participle."
-  (if (eq learning-irregular-verbs-in-English--state 1)
+  (if (eq lire--state 1)
       ""
     (format " %s" (if
 		      (and
-		       (string= (learning-irregular-verbs-in-English--value-field-past-participle) learning-irregular-verbs-in-English--verb-to-learn-past-participle)
-		       (not (string= (learning-irregular-verbs-in-English--value-field-past-participle) "")))
-		      learning-irregular-verbs-in-English--emoji-valid learning-irregular-verbs-in-English--emoji-error))))
+		       (string= (lire--value-field-past-participle) lire--verb-to-learn-past-participle)
+		       (not (string= (lire--value-field-past-participle) "")))
+		      lire--emoji-valid lire--emoji-error))))
 
-(defun learning-irregular-verbs-in-English--toggle-layout-success ()
+(defun lire--toggle-layout-finish ()
   "Toggle the layout to success."
-  (if (eq learning-irregular-verbs-in-English--state 3)
+  (if (eq lire--state 3)
       (progn
 	;; Cursor to end
 	(goto-char (point-max))
 	;; Remove check button
-	(widget-delete learning-irregular-verbs-in-English--widget-button-check)
-	(setq learning-irregular-verbs-in-English--widget-button-check nil)
+	(widget-delete lire--widget-button-check)
+	(setq lire--widget-button-check nil)
+	;; Remove space after check button
+	(widget-delete lire--widget-item-space-before-check)
+	(setq lire--widget-item-space-before-check nil)
+	;; Remove show solution button
+	(widget-delete lire--widget-button-show-solution)
+	(setq lire--widget-button-show-solution nil)
 	;; Text success
-	(setq learning-irregular-verbs-in-English--widget-item-space-before-success (widget-create 'item
+	(setq lire--widget-item-space-before-success (widget-create 'item
 												   ""))
-	(setq learning-irregular-verbs-in-English--widget-message-success (widget-create 'item
-											 learning-irregular-verbs-in-English--text-success
-											 ))
-	(setq learning-irregular-verbs-in-English--widget-item-space-after-success (widget-create 'item
-												  "\n"))
-	;; Replay button
-	(setq learning-irregular-verbs-in-English--widget-button-replay (widget-create 'push-button
+	(setq lire--widget-message-success (widget-create 'item
+											 (if lire--is-resolve lire--text-success lire--text-fail)))
+	(setq lire--widget-item-space-after-success (widget-create 'item
+								   "\n"))
+	;; Lire--Replay button
+	(setq lire--widget-button-lire--replay (widget-create 'push-button
 										       :size 20
 										       :notify (lambda (&rest ignore)
-												 (replay))
-										       learning-irregular-verbs-in-English--text-button-replay))
+												 (lire--replay))
+										       lire--text-button-lire--replay))
 	;; Space
-	(setq learning-irregular-verbs-in-English--widget-item-space-between-buttons (widget-create 'item
+	(setq lire--widget-item-space-between-buttons (widget-create 'item
 												    "\n"))
 	;; Quit button
-	(setq learning-irregular-verbs-in-English--widget-button-quit (widget-create 'push-button
+	(setq lire--widget-button-quit (widget-create 'push-button
 										     :size 20
 										     :notify (lambda (&rest ignore)
-											       (learning-irregular-verbs-in-English--kill-app))
-										     learning-irregular-verbs-in-English--text-button-quit))
+											       (lire--kill-app))
+										     lire--text-button-quit))
 	(widget-backward 2)
 	)
     (progn
-      (when (not (eq learning-irregular-verbs-in-English--widget-item-space-before-success nil)) (widget-delete learning-irregular-verbs-in-English--widget-item-space-before-success))
-      (when (not (eq learning-irregular-verbs-in-English--widget-message-success nil)) (widget-delete learning-irregular-verbs-in-English--widget-message-success))
-      (when (not (eq learning-irregular-verbs-in-English--widget-item-space-after-success nil)) (widget-delete learning-irregular-verbs-in-English--widget-item-space-after-success))
-      (when (not (eq learning-irregular-verbs-in-English--widget-button-replay nil)) (widget-delete learning-irregular-verbs-in-English--widget-button-replay))
-      (when (not (eq learning-irregular-verbs-in-English--widget-item-space-between-buttons nil)) (widget-delete learning-irregular-verbs-in-English--widget-item-space-between-buttons))
-      (when (not (eq learning-irregular-verbs-in-English--widget-button-quit nil)) (widget-delete learning-irregular-verbs-in-English--widget-button-quit))
+      (when (not (eq lire--widget-item-space-before-success nil)) (widget-delete lire--widget-item-space-before-success))
+      (when (not (eq lire--widget-message-success nil)) (widget-delete lire--widget-message-success))
+      (when (not (eq lire--widget-item-space-after-success nil)) (widget-delete lire--widget-item-space-after-success))
+      (when (not (eq lire--widget-button-lire--replay nil)) (widget-delete lire--widget-button-lire--replay))
+      (when (not (eq lire--widget-item-space-between-buttons nil)) (widget-delete lire--widget-item-space-between-buttons))
+      (when (not (eq lire--widget-button-quit nil)) (widget-delete lire--widget-button-quit))
       )))
 
-(defun learning-irregular-verbs-in-English--make-button-check ()
+(defun lire--make-button-check ()
   "Make the button check."
-  (setq learning-irregular-verbs-in-English--widget-button-check (widget-create 'push-button
+  (setq lire--widget-button-check (widget-create 'push-button
 										:notify (lambda (&rest ignore)
-											  (update))
-										learning-irregular-verbs-in-English--text-button-check)))
+											  (lire--update))
+										lire--text-button-check)))
+(defun lire--make-space-after-check ()
+  "Add space between Button check and Button show solution"
+  (setq lire--widget-item-space-before-check (widget-create 'item "\n")))
 
 
-(defun learning-irregular-verbs-in-English--start ()
+(defun lire--show-solutions ()
+  "Show solutions"
+  (setq lire--is-resolve nil)
+  (widget-value-set lire--widget-field-simple-past lire--verb-to-learn-simple-past)
+  (widget-value-set lire--widget-field-past-participle lire--verb-to-learn-past-participle))
+
+(defun lire--make-button-show-solution ()
+  "Make the button show solution."
+  (setq lire--widget-button-show-solution (widget-create 'push-button
+							 :notify (lambda (&rest ignore)
+								   (lire--show-solutions)
+								   (lire--update))
+							 lire--text-button-show-solution)))
+
+
+(defun lire--start ()
   "Start challenge."
-  ;; Set the learning-irregular-verbs-in-English--state
-  (setq learning-irregular-verbs-in-English--state 1)
+  ;; Set the lire--state
+  (setq lire--state 1)
   ;; Get a new verb
-  (learning-irregular-verbs-in-English--set-verb-to-learn)
+  (lire--set-verb-to-learn)
   ;; Show the verb in infinitive
-  (widget-value-set learning-irregular-verbs-in-English--widget-item-verb (learning-irregular-verbs-in-English--format-value-infinitive))
+  (widget-value-set lire--widget-item-verb (lire--format-value-infinitive))
   ;; Reset button check
-  (when (eq learning-irregular-verbs-in-English--widget-button-check nil) (learning-irregular-verbs-in-English--make-button-check))
+  (when (eq lire--widget-button-check nil) (lire--make-button-check))
+  ;; Reset space after check
+  (when (eq lire--widget-item-space-before-check nil) (lire--make-space-after-check))
+  ;; Reset button show solution
+  (when (eq lire--widget-button-show-solution nil) (lire--make-button-show-solution))
   ;; Clear the fields
-  (widget-value-set learning-irregular-verbs-in-English--widget-field-simple-past "")
-  (widget-value-set learning-irregular-verbs-in-English--widget-label-check-simple-past "")
-  (widget-value-set learning-irregular-verbs-in-English--widget-field-past-participle "")
-  (widget-value-set learning-irregular-verbs-in-English--widget-label-check-past-participle "")
+  (widget-value-set lire--widget-field-simple-past "")
+  (widget-value-set lire--widget-label-check-simple-past "")
+  (widget-value-set lire--widget-field-past-participle "")
+  (widget-value-set lire--widget-label-check-past-participle "")
   ;; Update labels
-  (update))
+  (lire--update))
 
-(defun replay ()
+(defun lire--replay ()
   "Replay the challenge."
   (interactive)
-  (learning-irregular-verbs-in-English--start)
+  (lire--start)
   (widget-backward 1))
 
-(defun update ()
-  "Check the answers."
+(defun lire--update ()
+  "Update state and show temps layouts."
   (interactive)
   ;; Is playing?
-  (when (and (eq learning-irregular-verbs-in-English--state 1)
+  (when (and (eq lire--state 1)
 	     (or
-	      (not (string= (learning-irregular-verbs-in-English--value-field-simple-past) ""))
-	      (not (string= (learning-irregular-verbs-in-English--value-field-past-participle) "")))
+	      (not (string= (lire--value-field-simple-past) ""))
+	      (not (string= (lire--value-field-past-participle) "")))
 	     )
-    (setq learning-irregular-verbs-in-English--state 2))
+    (setq lire--state 2))
   ;; Check the answers
-  (when (eq learning-irregular-verbs-in-English--state 2)
+  (when (eq lire--state 2)
     ;; Is win?
     (when (and
-	   (string= (learning-irregular-verbs-in-English--value-field-simple-past) learning-irregular-verbs-in-English--verb-to-learn-simple-past)
-	   (string= (learning-irregular-verbs-in-English--value-field-past-participle) learning-irregular-verbs-in-English--verb-to-learn-past-participle))
-      ;; Set the learning-irregular-verbs-in-English--state
-      (setq learning-irregular-verbs-in-English--state 3))
+	   (string= (lire--value-field-simple-past) lire--verb-to-learn-simple-past)
+	   (string= (lire--value-field-past-participle) lire--verb-to-learn-past-participle))
+      ;; Set the lire--state
+      (setq lire--state 3))
     ;; Update the check labels
-    (widget-value-set learning-irregular-verbs-in-English--widget-label-check-simple-past (learning-irregular-verbs-in-English--format-check-simple-past))
-    (widget-value-set learning-irregular-verbs-in-English--widget-label-check-past-participle (learning-irregular-verbs-in-English--format-check-past-participle)))
+    (widget-value-set lire--widget-label-check-simple-past (lire--format-check-simple-past))
+    (widget-value-set lire--widget-label-check-past-participle (lire--format-check-past-participle)))
   ;; Update the success layout if needed
-  (learning-irregular-verbs-in-English--toggle-layout-success))
+  (lire--toggle-layout-finish)
+  (setq lire--is-resolve t))
 
-(defun learning-irregular-verbs-in-English--main-layout ()
+(defun lire--main-layout ()
   "Make widgets for the main layout."
   ;; Create the buffer
-  (switch-to-buffer learning-irregular-verbs-in-English--buffer-name)
+  (switch-to-buffer lire--buffer-name)
   ;; Clear the buffer
   (kill-all-local-variables)
   (let ((inhibit-read-only t))
@@ -298,49 +331,53 @@
   (remove-overlays)
   ;; Create the widgets
   ;; Title
-  (insert (propertize (format "\n%s\n\n" learning-irregular-verbs-in-English--text-title) 'face '(:height 1.2 :weight bold)))
+  (insert (propertize (format "\n%s\n\n" lire--text-title) 'face '(:height 1.2 :weight bold)))
   ;; Verb in infinitive
-  (setq learning-irregular-verbs-in-English--widget-item-verb (widget-create 'item
+  (setq lire--widget-item-verb (widget-create 'item
 									     :value ""))
   ;; Separator
   (insert "\nSimple past     ➡️ ")
   ;; Simple past
-  (setq learning-irregular-verbs-in-English--widget-field-simple-past (widget-create 'editable-field
+  (setq lire--widget-field-simple-past (widget-create 'editable-field
 										     :size 8
 										     :help-echo "Type a Simple past"
 										     ))
   ;; Label check
   (insert " ")
-  (setq learning-irregular-verbs-in-English--widget-label-check-simple-past (widget-create 'item
-											   (learning-irregular-verbs-in-English--format-check-simple-past)))
+  (setq lire--widget-label-check-simple-past (widget-create 'item
+											   (lire--format-check-simple-past)))
   ;; Separator
   (insert "\nPast participle ➡️ ")
   ;; Past participle
-  (setq learning-irregular-verbs-in-English--widget-field-past-participle (widget-create 'editable-field
+  (setq lire--widget-field-past-participle (widget-create 'editable-field
 											 :size 8
 											 :help-echo "Type a Past participle"))
   ;; Label check
   (insert " ")
-  (setq learning-irregular-verbs-in-English--widget-label-check-past-participle (widget-create 'item
-											       (learning-irregular-verbs-in-English--format-check-past-participle)))
+  (setq lire--widget-label-check-past-participle (widget-create 'item
+											       (lire--format-check-past-participle)))
   ;; Separator
   (insert "\n")
   ;; Check button
-  (learning-irregular-verbs-in-English--make-button-check)
+  (lire--make-button-check)
+    ;; Separator
+  (lire--make-space-after-check)
+  ;; Show solution button
+  (lire--make-button-show-solution)
   ;; Display the buffer
   (use-local-map widget-keymap)
   (widget-setup))
 
 ;; Keybindings
-(define-key widget-keymap (kbd "q") 'learning-irregular-verbs-in-English--kill-app)
+(define-key widget-keymap (kbd "q") 'lire--kill-app)
 
 ;; Init
 (defun learning-irregular-verbs-in-English ()
   "Application to learn and review irregular verbs in English."
   (interactive)
-  (learning-irregular-verbs-in-English--main-layout)
-  (learning-irregular-verbs-in-English--start)
-  (widget-backward 1))
+  (lire--main-layout)
+  (lire--start)
+  (widget-backward 2))
 
 (provide 'learning-irregular-verbs-in-English)
 
