@@ -670,7 +670,7 @@
     (setq lire--verb-to-learn-infinitive (alist-get 'infinitive verbs-random))
     (setq lire--verb-to-learn-simple-past (alist-get 'simple-past verbs-random))
     (setq lire--verb-to-learn-past-participle (alist-get 'past-participle verbs-random))
-    (when (not (null (boundp learning-irregular-verbs-in-English--show-translation))) (setq lire--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verbs-random))))))
+    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lire--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verbs-random))))))
 
 (defun lire--format-value-infinitive ()
   "Format the value of the infinitive."
@@ -699,7 +699,7 @@
 (defun lire--show-translation ()
   "Show translation if learning-irregular-verbs-in-English--show-translation is t"
   (when (not (null lire--translation))
-    (widget-value-set lire--widget-item-verb (concat (lire--format-value-infinitive) " " lire--translation))))
+    (widget-value-set lire--widget-item-verb (concat (lire--format-value-infinitive) "   🇪🇸 " lire--translation))))
 
 (defun lire--toggle-layout-finish ()
   "Toggle the layout to success."
