@@ -672,8 +672,6 @@
     (setq lire--verb-to-learn-past-participle (alist-get 'past-participle verbs-random))
     (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lire--translation (alist-get 'learning-irregular-verbs-in-English--show-translation (alist-get 'translations verbs-random))))))
 
-(lire--set-verb-to-learn)
-
 (defun lire--format-value-infinitive ()
   "Format the value of the infinitive."
   (format "Infinitive      ➡️ %s" lire--verb-to-learn-infinitive))
