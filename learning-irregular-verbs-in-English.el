@@ -18,112 +18,614 @@
 
 ;; Variables
 
-(defvar lire--verbs '(
-		      ("beat" "beat" "beaten")
-		      ("become" "became" "become")
-		      ("begin" "began" "begun")
-		      ("bend" "bent" "bent")
-		      ("bet" "bet" "bet")
-		      ("bite" "bit" "bitten")
-		      ("bleed" "bled" "bled")
-		      ("blow" "blew" "blown")
-		      ("break" "broke" "broken")
-		      ("bring" "brought" "brought")
-		      ("build" "built" "built")
-		      ("burn" "burnt" "burnt")
-		      ("buy" "bought" "bought")
-		      ("catch" "caught" "caught")
-		      ("choose" "chose" "chosen")
-		      ("come" "came" "come")
-		      ("cost" "cost" "cost")
-		      ("cut" "cut" "cut")
-		      ("dig" "dug" "dug")
-		      ("do" "did" "done")
-		      ("draw" "drew" "drawn")
-		      ("dream" "dreamt" "dreamt")
-		      ("drink" "drank" "drunk")
-		      ("drive" "drove" "driven")
-		      ("eat" "ate" "eaten")
-		      ("fall" "fell" "fallen")
-		      ("feed" "fed" "fed")
-		      ("feel" "felt" "felt")
-		      ("fight" "fought" "fought")
-		      ("find" "found" "found")
-		      ("fly" "flew" "flown")
-		      ("forget" "forgot" "forgotten")
-		      ("forgive" "forgave" "forgiven")
-		      ("freeze" "froze" "frozen")
-		      ("get" "got" "got")
-		      ("give" "gave" "given")
-		      ("go" "went" "gone")
-		      ("grow" "grew" "grown")
-		      ("hang" "hung" "hung")
-		      ("have" "had" "had")
-		      ("hear" "heard" "heard")
-		      ("hide" "hid" "hidden")
-		      ("hit" "hit" "hit")
-		      ("hold" "held" "held")
-		      ("hurt" "hurt" "hurt")
-		      ("keep" "kept" "kept")
-		      ("know" "knew" "known")
-		      ("lay" "laid" "laid")
-		      ("lead" "led" "led")
-		      ("learn" "learnt" "learnt")
-		      ("leave" "left" "left")
-		      ("lend" "lent" "lent")
-		      ("let" "let" "let")
-		      ("lie" "lay" "lain")
-		      ("light" "lit" "lit")
-		      ("lose" "lost" "lost")
-		      ("make" "made" "made")
-		      ("mean" "meant" "meant")
-		      ("meet" "met" "met")
-		      ("pay" "paid" "paid")
-		      ("put" "put" "put")
-		      ("read" "read" "read")
-		      ("ride" "rode" "ridden")
-		      ("ring" "rang" "rung")
-		      ("rise" "rose" "risen")
-		      ("run" "ran" "run")
-		      ("say" "said" "said")
-		      ("see" "saw" "seen")
-		      ("sell" "sold" "sold")
-		      ("send" "sent" "sent")
-		      ("set" "set" "set")
-		      ("shake" "shook" "shaken")
-		      ("shine" "shone" "shone")
-		      ("shoot" "shot" "shot")
-		      ("show" "showed" "shown")
-		      ("shut" "shut" "shut")
-		      ("sing" "sang" "sung")
-		      ("sink" "sank" "sunk")
-		      ("sit" "sat" "sat")
-		      ("sleep" "slept" "slept")
-		      ("smell" "smelt" "smelt")
-		      ("speak" "spoke" "spoken")
-		      ("spend" "spent" "spent")
-		      ("spell" "spelt" "spelt")
-		      ("spit" "spit" "spit")
-		      ("stand" "stood" "stood")
-		      ("steal" "stole" "stolen")
-		      ("swim" "swam" "swum")
-		      ("take" "took" "taken")
-		      ("teach" "taught" "taught")
-		      ("tear" "tore" "torn")
-		      ("tell" "told" "told")
-		      ("think" "thought" "thought")
-		      ("throw" "threw" "thrown")
-		      ("understand" "understood" "understood")
-		      ("wake" "woke" "woken")
-		      ("wear" "wore" "worn")
-		      ("win" "won" "won")
-		      ("write" "wrote" "written")))
-;; lire
+(defvar  lire--verbs '(
+		      (
+		       (infinitive . "beat")
+		       (simple-past . "beat")
+		       (past-participle . "beaten")
+		       (translations
+			(es . "golpear")))
+		      (
+		       (infinitive . "become")
+		       (simple-past . "became")
+		       (past-participle . "become")
+		       (translations
+			(es . "llegar a ser, convertirse en")))
+		      (
+		       (infinitive . "begin")
+		       (simple-past . "began")
+		       (past-participle . "begun")
+		       (translations
+			(es . "empezar")))
+		      (
+		       (infinitive . "bend")
+		       (simple-past . "bent")
+		       (past-participle . "bent")
+		       (translations
+			(es . "doblar")))
+		      (
+		       (infinitive . "bet")
+		       (simple-past . "bet")
+		       (past-participle . "bet")
+		       (translations
+			(es . "apostar")))
+		      (
+		       (infinitive . "bite")
+		       (simple-past . "bit")
+		       (past-participle . "bitten")
+		       (translations
+			(es . ("morder"))))
+		      (
+		       (infinitive . "bleed")
+		       (simple-past . "bled")
+		       (past-participle . "bled")
+		       (translations
+			(es . "sangrar")))
+		      (
+		       (infinitive . "blow")
+		       (simple-past . "blew")
+		       (past-participle . "blown")
+		       (translations
+			(es . ("soplar"))))
+		      (
+		       (infinitive . "break")
+		       (simple-past . "broke")
+		       (past-participle . "broken")
+		       (translations
+			(es . "romper")))
+		      (
+		       (infinitive . "bring")
+		       (simple-past . "brought")
+		       (past-participle . "brought")
+		       (translations
+			(es . "traer")))
+		      (
+		       (infinitive . "build")
+		       (simple-past . "built")
+		       (past-participle . "built")
+		       (translations
+			(es . "construir")))
+		      (
+		       (infinitive . "burn")
+		       (simple-past . "burnt")
+		       (past-participle . "burnt")
+		       (translations
+			(es . "quemar")))
+		      (
+		       (infinitive . "buy")
+		       (simple-past . "bought")
+		       (past-participle . "bought")
+		       (translations
+			(es . "comprar")))
+		      (
+		       (infinitive . "catch")
+		       (simple-past . "caught")
+		       (past-participle . "caught")
+		       (translations
+			(es . "coger")))
+		      (
+		       (infinitive . "choose")
+		       (simple-past . "chose")
+		       (past-participle . "chosen")
+		       (translations
+			(es . "escoger")))
+		      (
+		       (infinitive . "come")
+		       (simple-past . "came")
+		       (past-participle . "come")
+		       (translations
+			(es . "venir")))
+		      (
+		       (infinitive . "cost")
+		       (simple-past . "cost")
+		       (past-participle . "cost")
+		       (translations
+			(es . "costar")))
+		      (
+		       (infinitive . "cut")
+		       (simple-past . "cut")
+		       (past-participle . "cut")
+		       (translations
+			(es . "cortar")))
+		      (
+		       (infinitive . "dig")
+		       (simple-past . "dug")
+		       (past-participle . "dug")
+		       (translations
+			(es . "cavar")))
+		      (
+		       (infinitive . "do")
+		       (simple-past . "did")
+		       (past-participle . "done")
+		       (translations
+			(es . "hacer")))
+		      (
+		       (infinitive . "draw")
+		       (simple-past . "drew")
+		       (past-participle . "drawn")
+		       (translations
+			(es . '"(dibujar, trazar")))
+		      (
+		       (infinitive . "dream")
+		       (simple-past . "dreamt")
+		       (past-participle . "dreamt")
+		       (translations
+			(es . "soñar")))
+		      (
+		       (infinitive . "drink")
+		       (simple-past . "drank")
+		       (past-participle . "drunk")
+		       (translations
+			(es . "beber")))
+		      (
+		       (infinitive . "drive")
+		       (simple-past . "drove")
+		       (past-participle . "driven")
+		       (translations
+			(es . "conducir")))
+		      (
+		       (infinitive . "eat")
+		       (simple-past . "ate")
+		       (past-participle . "eaten")
+		       (translations
+			(es . "comer")))
+		      (
+		       (infinitive . "fall")
+		       (simple-past . "fell")
+		       (past-participle . "fallen")
+		       (translations
+			(es . "caer(se)")))
+		      (
+		       (infinitive . "feed")
+		       (simple-past . "fed")
+		       (past-participle . "fed")
+		       (translations
+			(es . "dar de comer, alimentar")))
+		      (
+		       (infinitive . "feel")
+		       (simple-past . "felt")
+		       (past-participle . "felt")
+		       (translations
+			(es . "sentir")))
+		      (
+		       (infinitive . "fight")
+		       (simple-past . "fought")
+		       (past-participle . "fought")
+		       (translations
+			(es . "pelear, luchar")))
+		      (
+		       (infinitive . "find")
+		       (simple-past . "found")
+		       (past-participle . "found")
+		       (translations
+			(es . "encontrar")))
+		      (
+		       (infinitive . "fly")
+		       (simple-past . "flew")
+		       (past-participle . "flown")
+		       (translations
+			(es . "volar")))
+		      (
+		       (infinitive . "forget")
+		       (simple-past . "forgot")
+		       (past-participle . "forgotten")
+		       (translations
+			(es . "olvidar")))
+		      (
+		       (infinitive . "forgive")
+		       (simple-past . "forgave")
+		       (past-participle . "forgiven")
+		       (translations
+			(es . "perdonar")))
+		      (
+		       (infinitive . "freeze")
+		       (simple-past . "froze")
+		       (past-participle . "frozen")
+		       (translations
+			(es . "helar, congelar")))
+		      (
+		       (infinitive . "get")
+		       (simple-past . "got")
+		       (past-participle . "got")
+		       (translations
+			(es . "conseguir")))
+		      (
+		       (infinitive . "give")
+		       (simple-past . "gave")
+		       (past-participle . "given")
+		       (translations
+			(es . "dar")))
+		      (
+		       (infinitive . "go")
+		       (simple-past . "went")
+		       (past-participle . "gone")
+		       (translations
+			(es . "ir")))
+		      (
+		       (infinitive . "grow")
+		       (simple-past . "grew")
+		       (past-participle . "grown")
+		       (translations
+			(es . "cultivar, crecer")))
+		      (
+		       (infinitive . "hang")
+		       (simple-past . "hung")
+		       (past-participle . "hung")
+		       (translations
+			(es . "colgar")))
+		      (
+		       (infinitive . "have")
+		       (simple-past . "had")
+		       (past-participle . "had")
+		       (translations
+			(es . "tener")))
+		      (
+		       (infinitive . "hear")
+		       (simple-past . "heard")
+		       (past-participle . "heard")
+		       (translations
+			(es .' ("oír"))))
+		      (
+		       (infinitive . "hide")
+		       (simple-past . "hid")
+		       (past-participle . "hidden")
+		       (translations
+			(es . "esconder")))
+		      (
+		       (infinitive . "hit")
+		       (simple-past . "hit")
+		       (past-participle . "hit")
+		       (translations
+			(es . "golpear, pegar")))
+		      (
+		       (infinitive . "hold")
+		       (simple-past . "held")
+		       (past-participle . "held")
+		       (translations
+			(es . "sostener")))
+		      (
+		       (infinitive . "hurt")
+		       (simple-past . "hurt")
+		       (past-participle . "hurt")
+		       (translations
+			(es . "herir")))
+		      (
+		       (infinitive . "keep")
+		       (simple-past . "kept")
+		       (past-participle . "kept")
+		       (translations
+			(es . "mantener")))
+		      (
+		       (infinitive . "know")
+		       (simple-past . "knew")
+		       (past-participle . "known")
+		       (translations
+			(es . "saber, conocer")))
+		      (
+		       (infinitive . "lay")
+		       (simple-past . "laid")
+		       (past-participle . "laid")
+		       (translations
+			(es . "poner (la mesa), colocar")))
+		      (
+		       (infinitive . "lead")
+		       (simple-past . "led")
+		       (past-participle . "led")
+		       (translations
+			(es . "dirigir")))
+		      (
+		       (infinitive . "learn")
+		       (simple-past . "learnt")
+		       (past-participle . "learnt")
+		       (translations
+			(es . "aprender")))
+		      (
+		       (infinitive . "leave")
+		       (simple-past . "left")
+		       (past-participle . "left")
+		       (translations
+			(es . "dejar, marcharse(se)")))
+		      (
+		       (infinitive . "lend")
+		       (simple-past . "lent")
+		       (past-participle . "lent")
+		       (translations
+			(es . "prestar")))
+		      (
+		       (infinitive . "let")
+		       (simple-past . "let")
+		       (past-participle . "let")
+		       (translations
+			(es . "dejar, permitir")))
+		      (
+		       (infinitive . "lie")
+		       (simple-past . "lay")
+		       (past-participle . "lain")
+		       (translations
+			(es . "tumbarse")))
+		      (
+		       (infinitive . "light")
+		       (simple-past . "lit")
+		       (past-participle . "lit")
+		       (translations
+			(es . "iluminar")))
+		      (
+		       (infinitive . "lose")
+		       (simple-past . "lost")
+		       (past-participle . "lost")
+		       (translations
+			(es . "perder")))
+		      (
+		       (infinitive . "make")
+		       (simple-past . "made")
+		       (past-participle . "made")
+		       (translations
+			(es . "hacer")))
+		      (
+		       (infinitive . "mean")
+		       (simple-past . "meant")
+		       (past-participle . "meant")
+		       (translations
+			(es . "significar, querer decir")))
+		      (
+		       (infinitive . "meet")
+		       (simple-past . "met")
+		       (past-participle . "met")
+		       (translations
+			(es . "conocer")))
+		      (
+		       (infinitive . "pay")
+		       (simple-past . "paid")
+		       (past-participle . "paid")
+		       (translations
+			(es . "pagar")))
+		      (
+		       (infinitive . "put")
+		       (simple-past . "put")
+		       (past-participle . "put")
+		       (translations
+			(es . "poner")))
+		      (
+		       (infinitive . "read")
+		       (simple-past . "read")
+		       (past-participle . "read")
+		       (translations
+			(es . "leer")))
+		      (
+		       (infinitive . "ride")
+		       (simple-past . "rode")
+		       (past-participle . "ridden")
+		       (translations
+			(es . "montar")))
+		      (
+		       (infinitive . "ring")
+		       (simple-past . "rang")
+		       (past-participle . "rung")
+		       (translations
+			(es . "sonar, llamar por teléfono")))
+		      (
+		       (infinitive . "rise")
+		       (simple-past . "rose")
+		       (past-participle . "risen")
+		       (translations
+			(es . "levantarse")))
+		      (
+		       (infinitive . "run")
+		       (simple-past . "ran")
+		       (past-participle . "run")
+		       (translations
+			(es . "correr")))
+		      (
+		       (infinitive . "say")
+		       (simple-past . "said")
+		       (past-participle . "said")
+		       (translations
+			(es . "decir")))
+		      (
+		       (infinitive . "see")
+		       (simple-past . "saw")
+		       (past-participle . "seen")
+		       (translations
+			(es . "ver")))
+		      (
+		       (infinitive . "sell")
+		       (simple-past . "sold")
+		       (past-participle . "sold")
+		       (translations
+			(es . "vender")))
+		      (
+		       (infinitive . "send")
+		       (simple-past . "sent")
+		       (past-participle . "sent")
+		       (translations
+			(es . "enviar")))
+		      (
+		       (infinitive . "set")
+		       (simple-past . "set")
+		       (past-participle . "set")
+		       (translations
+			(es . "colocar, fijar, poner la mesa")))
+		      (
+		       (infinitive . "shake")
+		       (simple-past . "shook")
+		       (past-participle . "shaken")
+		       (translations
+			(es . "agitar, sacudir")))
+		      (
+		       (infinitive . "shine")
+		       (simple-past . "shone")
+		       (past-participle . "shone")
+		       (translations
+			(es . "brillar, sacar brillo")))
+		      (
+		       (infinitive . "shoot")
+		       (simple-past . "shot")
+		       (past-participle . "shot")
+		       (translations
+			(es . "disparar")))
+		      (
+		       (infinitive . "show")
+		       (simple-past . "showed")
+		       (past-participle . "shown")
+		       (translations
+			(es . "mostrar")))
+		      (
+		       (infinitive . "shut")
+		       (simple-past . "shut")
+		       (past-participle . "shut")
+		       (translations
+			(es . "cerrar")))
+		      (
+		       (infinitive . "sing")
+		       (simple-past . "sang")
+		       (past-participle . "sung")
+		       (translations
+			(es . "cantar")))
+		      (
+		       (infinitive . "sink")
+		       (simple-past . "sank")
+		       (past-participle . "sunk")
+		       (translations
+			(es . "hundir(se)")))
+		      (
+		       (infinitive . "sit")
+		       (simple-past . "sat")
+		       (past-participle . "sat")
+		       (translations
+			(es . "sentar(se)")))
+		      (
+		       (infinitive . "sleep")
+		       (simple-past . "slept")
+		       (past-participle . "slept")
+		       (translations
+			(es . "dormir")))
+		      (
+		       (infinitive . "smell")
+		       (simple-past . "smelt")
+		       (past-participle . "smelt")
+		       (translations
+			(es . "oler")))
+		      (
+		       (infinitive . "speak")
+		       (simple-past . "spoke")
+		       (past-participle . "spoken")
+		       (translations
+			(es . "hablar")))
+		      (
+		       (infinitive . "spell")
+		       (simple-past . "spelt")
+		       (past-participle . "spelt")
+		       (translations
+			(es . "deletrear")))
+		      (
+		       (infinitive . "spend")
+		       (simple-past . "spent")
+		       (past-participle . "spent")
+		       (translations
+			(es . "gastar")))
+		      (
+		       (infinitive . "spill")
+		       (simple-past . "spilt")
+		       (past-participle . "spilt")
+		       (translations
+			(es . "derramar")))
+		      (
+		       (infinitive . "spit")
+		       (simple-past . "spit")
+		       (past-participle . "spit")
+		       (translations
+			(es . "escupir")))
+		      (
+		       (infinitive . "stand")
+		       (simple-past . "stood")
+		       (past-participle . "stood")
+		       (translations
+			(es . "ponerse/estar de pie")))
+		      (
+		       (infinitive . "steal")
+		       (simple-past . "stole")
+		       (past-participle . "stolen")
+		       (translations
+			(es . "robar")))
+		      (
+		       (infinitive . "swim")
+		       (simple-past . "swam")
+		       (past-participle . "swum")
+		       (translations
+			(es . "nadar")))
+		      (
+		       (infinitive . "take")
+		       (simple-past . "took")
+		       (past-participle . "taken")
+		       (translations
+			(es . "tomar, coger")))
+		      (
+		       (infinitive . "teach")
+		       (simple-past . "taught")
+		       (past-participle . "taught")
+		       (translations
+			(es . "enseñar")))
+		      (
+		       (infinitive . "tear")
+		       (simple-past . "tore")
+		       (past-participle . "torn")
+		       (translations
+			(es . "romper, rasgar")))
+		      (
+		       (infinitive . "tell")
+		       (simple-past . "told")
+		       (past-participle . "told")
+		       (translations
+			(es . "decir, contar")))
+		      (
+		       (infinitive . "think")
+		       (simple-past . "thought")
+		       (past-participle . "thought")
+		       (translations
+			(es . "pensar")))
+		      (
+		       (infinitive . "throw")
+		       (simple-past . "threw")
+		       (past-participle . "thrown")
+		       (translations
+			(es . "lanzar, tirar")))
+		      (
+		       (infinitive . "understand")
+		       (simple-past . "understood")
+		       (past-participle . "understood")
+		       (translations
+			(es . "entender")))
+		      (
+		       (infinitive . "wake")
+		       (simple-past . "woke")
+		       (past-participle . "woken")
+		       (translations
+			(es . "despertar")))
+		      (
+		       (infinitive . "wear")
+		       (simple-past . "wore")
+		       (past-participle . "worn")
+		       (translations
+			(es . "llevar puesto")))
+		      (
+		       (infinitive . "win")
+		       (simple-past . "won")
+		       (past-participle . "won")
+		       (translations
+			(es . "ganar")))
+		      (
+		       (infinitive . "write")
+		       (simple-past . "wrote")
+		       (past-participle . "written")
+		       (translations
+			(es . "escribir")))))
+;; Variables
 (defvar lire--buffer-name "*Learning irregular verbs in English*")
 (defvar lire--state 1) ;; 1: lire--start, 2: playing (before first check), 3: win (show success layout)
 (defvar lire--verb-to-learn-infinitive nil)
 (defvar lire--verb-to-learn-simple-past nil)
 (defvar lire--verb-to-learn-past-participle nil)
+(defvar lire--translation nil)
 (defvar lire--emoji-valid "✅")
 (defvar lire--emoji-error "👎")
 (defvar lire--widget-title nil)
@@ -165,9 +667,12 @@
 (defun lire--set-verb-to-learn ()
   "Set the verb to learn."
   (let ((verbs-random (nth (random (length lire--verbs)) lire--verbs)))
-    (setq lire--verb-to-learn-infinitive (nth 0 verbs-random))
-    (setq lire--verb-to-learn-simple-past (nth 1 verbs-random))
-    (setq lire--verb-to-learn-past-participle (nth 2 verbs-random))))
+    (setq lire--verb-to-learn-infinitive (alist-get 'infinitive verbs-random))
+    (setq lire--verb-to-learn-simple-past (alist-get 'simple-past verbs-random))
+    (setq lire--verb-to-learn-past-participle (alist-get 'past-participle verbs-random))
+    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lire--translation (alist-get 'learning-irregular-verbs-in-English--show-translation (alist-get 'translations verbs-random))))))
+
+(lire--set-verb-to-learn)
 
 (defun lire--format-value-infinitive ()
   "Format the value of the infinitive."
@@ -193,10 +698,17 @@
 		       (not (string= (lire--value-field-past-participle) "")))
 		      lire--emoji-valid lire--emoji-error))))
 
+(defun lire--show-translation ()
+  "Show translation if learning-irregular-verbs-in-English--show-translation is t"
+  (when (not (null lire--translation))
+    (widget-value-set lire--widget-item-verb (concat (lire--format-value-infinitive) " " lire--translation))))
+
 (defun lire--toggle-layout-finish ()
   "Toggle the layout to success."
   (if (eq lire--state 3)
       (progn
+	;; Show translate
+	(lire--show-translation)
 	;; Cursor to end
 	(goto-char (point-max))
 	;; Remove check button
@@ -210,26 +722,26 @@
 	(setq lire--widget-button-show-solution nil)
 	;; Text success
 	(setq lire--widget-item-space-before-success (widget-create 'item
-												   ""))
+								    ""))
 	(setq lire--widget-message-success (widget-create 'item
-											 (if lire--is-resolve lire--text-success lire--text-fail)))
+							  (if lire--is-resolve lire--text-success lire--text-fail)))
 	(setq lire--widget-item-space-after-success (widget-create 'item
 								   "\n"))
 	;; Lire--Replay button
 	(setq lire--widget-button-lire--replay (widget-create 'push-button
-										       :size 20
-										       :notify (lambda (&rest ignore)
-												 (lire--replay))
-										       lire--text-button-lire--replay))
+							      :size 20
+							      :notify (lambda (&rest ignore)
+									(lire--replay))
+							      lire--text-button-lire--replay))
 	;; Space
 	(setq lire--widget-item-space-between-buttons (widget-create 'item
-												    "\n"))
+								     "\n"))
 	;; Quit button
 	(setq lire--widget-button-quit (widget-create 'push-button
-										     :size 20
-										     :notify (lambda (&rest ignore)
-											       (lire--kill-app))
-										     lire--text-button-quit))
+						      :size 20
+						      :notify (lambda (&rest ignore)
+								(lire--kill-app))
+						      lire--text-button-quit))
 	(widget-backward 2)
 	)
     (progn
@@ -244,9 +756,9 @@
 (defun lire--make-button-check ()
   "Make the button check."
   (setq lire--widget-button-check (widget-create 'push-button
-										:notify (lambda (&rest ignore)
-											  (lire--update))
-										lire--text-button-check)))
+						 :notify (lambda (&rest ignore)
+							   (lire--update))
+						 lire--text-button-check)))
 (defun lire--make-space-after-check ()
   "Add space between Button check and Button show solution"
   (setq lire--widget-item-space-before-check (widget-create 'item "\n")))
@@ -367,9 +879,6 @@
   ;; Display the buffer
   (use-local-map widget-keymap)
   (widget-setup))
-
-;; Keybindings
-(define-key widget-keymap (kbd "q") 'lire--kill-app)
 
 ;; Init
 (defun learning-irregular-verbs-in-English ()
