@@ -625,7 +625,7 @@
 (defvar lire--verb-to-learn-infinitive nil)
 (defvar lire--verb-to-learn-simple-past nil)
 (defvar lire--verb-to-learn-past-participle nil)
-(defvar lire--translation nil)
+(defvar lire--translation "")
 (defvar lire--emoji-valid "✅")
 (defvar lire--emoji-error "👎")
 (defvar lire--widget-title nil)
