@@ -17,6 +17,8 @@ Add in your `init.el`.
 
 Shows the translation of the verb when resolving or failing.
 
+![Demo translation](demo-translation.png)
+
 Only available in Spanish.
 
 ```elisp
