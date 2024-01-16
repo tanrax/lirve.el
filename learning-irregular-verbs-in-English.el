@@ -3,7 +3,7 @@
 ;; Copyright © 2024 Andros Fenollosa
 ;; Authors: Andros Fenollosa <andros@fenollosa.email>
 ;; URL: https://github.com/tanrax/learning-irregular-verbs-in-English.el
-;; Version: 1.0.0
+;; Version: 1.1.0
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
@@ -18,7 +18,7 @@
 
 ;; Variables
 
-(defvar  lire--verbs '(
+(defvar lire--verbs '(
 		      (
 		       (infinitive . "beat")
 		       (simple-past . "beat")
@@ -620,6 +620,7 @@
 		       (translations
 			(es . "escribir")))))
 ;; Variables
+(defvar lire--verbs-shuffle '())
 (defvar lire--buffer-name "*Learning irregular verbs in English*")
 (defvar lire--state 1) ;; 1: lire--start, 2: playing (before first check), 3: win (show success layout)
 (defvar lire--verb-to-learn-infinitive nil)
@@ -654,6 +655,23 @@
 
 ;; Functions
 
+(defun lire--shuffle (originalList &optional shuffledList)
+  "Applies the Fisher-Yates shuffle algorithm to a list.
+Example: (lire--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
+  (if (null originalList)
+      ;; End recursion, return the shuffled list
+      shuffledList
+      ;; Otherwise, continue with the logic
+    (let* ((randomPosition (random (length originalList)))
+           (randomElement (nth randomPosition originalList))
+           ;; Create a new original list without the randomly selected element
+           (originalListWithoutRandomElement (append (cl-subseq originalList 0 randomPosition) (nthcdr (1+ randomPosition) originalList)))
+           ;; Create a new shuffled list with the selected element at the beginning
+           (newShuffledList (if (null shuffledList) (list randomElement) (cons randomElement shuffledList))))
+      ;; Recursively call the shuffle function with the new original list and the new shuffled list
+      (lire--shuffle originalListWithoutRandomElement newShuffledList))))
+
+
 (defun lire--kill-app ()
   "Kill the application."
   (kill-buffer lire--buffer-name))
@@ -666,11 +684,15 @@
 
 (defun lire--set-verb-to-learn ()
   "Set the verb to learn."
-  (let ((verbs-random (nth (random (length lire--verbs)) lire--verbs)))
-    (setq lire--verb-to-learn-infinitive (alist-get 'infinitive verbs-random))
-    (setq lire--verb-to-learn-simple-past (alist-get 'simple-past verbs-random))
-    (setq lire--verb-to-learn-past-participle (alist-get 'past-participle verbs-random))
-    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lire--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verbs-random))))))
+  (when (null lire--verbs-shuffle)
+    (setq lire--verbs-shuffle (lire--shuffle lire--verbs)))
+  (let ((verb-to-learn  (car lire--verbs-shuffle)))
+    (setq lire--verb-to-learn-infinitive (alist-get 'infinitive verb-to-learn))
+    (setq lire--verb-to-learn-simple-past (alist-get 'simple-past verb-to-learn))
+    (setq lire--verb-to-learn-past-participle (alist-get 'past-participle verb-to-learn))
+    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lire--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verb-to-learn))))
+    ;; Remove the verb from the list
+    (setq lire--verbs-shuffle (cdr lire--verbs-shuffle))))
 
 (defun lire--format-value-infinitive ()
   "Format the value of the infinitive."
