@@ -12,8 +12,7 @@
 ;;; Code:
 
 ;; Imports
-(load-file "verbs.el")
-(require 'verbs)
+(require 'learning-irregular-verbs-in-English--verbs)
 (require 'widget)
 (eval-when-compile
   (require 'wid-edit))

@@ -1,5 +1,3 @@
-(provide 'verbs)
-
 (defvar lire--verbs '(
 		      (
 		       (infinitive . "beat")
@@ -601,3 +599,5 @@
 		       (past-participle . "written")
 		       (translations
 			(es . "escribir")))))
+
+(provide 'learning-irregular-verbs-in-English--verbs)
