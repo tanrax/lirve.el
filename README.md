@@ -45,3 +45,15 @@ M-x learning-irregular-verbs-in-english
 ## Collaborate
 
 If you want to add more languages, make a PR with the translations in `lirve-verbs.el`.
+
+For example, the verb `beat` in Italian and Spanish:
+
+```ellisp
+(
+    (infinitive . "beat")
+    (simple-past . "beat")
+    (past-participle . "beaten")
+    (translations
+        (es . "golpear")
+        (it . "colpo")))
+```
