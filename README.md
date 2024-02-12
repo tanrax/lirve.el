@@ -1,15 +1,18 @@
-# Learn irregular English verbs in Emacs
-## learning-irregular-verbs-in-english.el
+# Lirve: Learn irregular English verbs in Emacs
+
+Lirve helps you learn irregular verbs using the spaced repetition technique. In other words: Lirve remember your mistakes and repeat the challenge in the future.
 
 ![Demo](demo.png)
 
 ## Install
 
-Add in your `init.el`.
+You need to have `straight` installed.
+
+Then, add it to your `init.el`.
 
 ```elisp
 (use-package learning-irregular-verbs-in-english
-  :straight (:host github :repo "tanrax/learning-irregular-verbs-in-English.el" :files ("lirve--verbs.el" "lirve.el"))
+  :straight (:host github :repo "tanrax/learning-irregular-verbs-in-English.el" :files ("lirve-verbs.el" "lirve.el"))
   :ensure t)
 ```
 
@@ -19,7 +22,7 @@ Shows the translation of the verb when resolving or failing.
 
 ![Demo translation](demo-translation.png)
 
-Only available in Spanish.
+Only available in Spanish (at the moment).
 
 ```elisp
 (setq lirve--show-translation 'es)
@@ -38,4 +41,7 @@ M-x learning-irregular-verbs-in-english
 | `TAB` | Move to the next field |
 | `S-TAB` | Move to the previous field |
 | `RET` | Click on the button |
-| `q` | Quit |
+
+## Collaborate
+
+If you want to add more languages, make a PR with the translations in `lirve-verbs.el`.
