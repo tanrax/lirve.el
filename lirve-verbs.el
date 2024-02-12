@@ -1,4 +1,17 @@
-(defvar lire--verbs '(
+;;; lirve-verbs.el --- Verb list for learning irregular verbs in English -*- lexical-binding: t; -*-
+;;
+;; Copyright © 2024 Andros Fenollosa
+;; Authors: Andros Fenollosa <andros@fenollosa.email>
+;; URL: https://github.com/tanrax/learning-irregular-verbs-in-English.el
+;; Version: 1.2.0
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;;; Commentary:
+;; This file contains a list of irregular verbs in English, with their
+
+;;; Code:
+
+(defvar lirve--verbs '(
 		      (
 		       (infinitive . "beat")
 		       (simple-past . "beat")
@@ -600,4 +613,5 @@
 		       (translations
 			(es . "escribir")))))
 
-(provide 'learning-irregular-verbs-in-English--verbs)
+(provide 'lirve-verbs)
+;;; lirve-verbs.el ends here

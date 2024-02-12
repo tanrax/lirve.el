@@ -1,5 +1,5 @@
 # Learn irregular English verbs in Emacs
-## learning-irregular-verbs-in-English.el
+## learning-irregular-verbs-in-english.el
 
 ![Demo](demo.png)
 
@@ -8,8 +8,8 @@
 Add in your `init.el`.
 
 ```elisp
-(use-package learning-irregular-verbs-in-English
-  :straight (:host github :repo "tanrax/learning-irregular-verbs-in-English.el" :files ("learning-irregular-verbs-in-English.el"))
+(use-package learning-irregular-verbs-in-english
+  :straight (:host github :repo "tanrax/learning-irregular-verbs-in-English.el" :files ("lirve--verbs.el" "lirve.el"))
   :ensure t)
 ```
 
@@ -22,13 +22,13 @@ Shows the translation of the verb when resolving or failing.
 Only available in Spanish.
 
 ```elisp
-(setq learning-irregular-verbs-in-English--show-translation 'es)
+(setq lirve--show-translation 'es)
 ```
 
 ## Usage
 
 ```
-M-x learning-irregular-verbs-in-English
+M-x learning-irregular-verbs-in-english
 ```
 
 ## Controls
