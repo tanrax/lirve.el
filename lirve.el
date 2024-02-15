@@ -1,4 +1,4 @@
-;;; lirve.el --- Application to learn and review irregular verbs in English. -*- lexical-binding: t;
+;;; lirve.el --- Application to learn and review irregular verbs in English. -*- lexical-binding: t -*-
 ;;
 ;; Copyright © 2024 Andros Fenollosa
 ;; Authors: Andros Fenollosa <andros@fenollosa.email>
@@ -18,8 +18,10 @@
   (require 'wid-edit))
 
 ;; Variables
+(defvar lirve--count-verbs 0) ;; It's used to know when unresolved verbs are shown
+(defvar lirve--interval-unresolved 3) ;; Interval to show unresolved verbs
 (defvar lirve--verbs-shuffle '())
-(defvar lirve--file-name-unresolved "lirve-unresolved.txt")
+(defvar lirve--file-name-unresolved ".lirve-unresolved")
 (defvar lirve--verbs-unresolved '())
 (defvar lirve--buffer-name "*Learning irregular verbs in English*")
 (defvar lirve--state 1) ;; 1: lirve--start, 2: playing (before first check), 3: win (show success layout)
@@ -55,13 +57,29 @@
 
 ;; Functions
 
+(defun lirve--kill-app ()
+  "Kill the application."
+  (interactive)
+  (kill-buffer lirve--buffer-name))
+
+(defun lirve--it-have-decimals (num)
+  "Return t if NUM is have decimals."
+  (let ((my-num (if (and
+		     (stringp num)
+		     ) ;; Return 0 if it is not a number
+		    (string-to-number num) num)))
+    (when my-num (not (or (zerop my-num)    ;; Check if it is 0
+			  (integerp my-num) ;; Check if it is integer
+			  (and (floatp my-num) (equal my-num (float (truncate my-num)))) ;; Check if it is float
+			  )))))
+
 (defun lirve--shuffle (originalList &optional shuffledList)
   "Applies the Fisher-Yates shuffle algorithm to a list.
 Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   (if (null originalList)
       ;; End recursion, return the shuffled list
       shuffledList
-      ;; Otherwise, continue with the logic
+    ;; Otherwise, continue with the logic
     (let* ((randomPosition (random (length originalList)))
            (randomElement (nth randomPosition originalList))
            ;; Create a new original list without the randomly selected element
@@ -71,15 +89,37 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
       ;; Recursively call the shuffle function with the new original list and the new shuffled list
       (lirve--shuffle originalListWithoutRandomElement newShuffledList))))
 
-(defun lirve--kill-app ()
-  "Kill the application."
-  (kill-buffer lirve--buffer-name))
+(defun lirve--get-verb-for-infinitive (infinitive)
+  "Get the verb for the infinitive."
+  (car (seq-filter
+      (lambda (verb) (string= infinitive (alist-get 'infinitive verb)))
+      lirve--verbs
+  )))
+
+(defun lirve--full-path-unresolved ()
+  "Get the full path of the unresolved file."
+  (concat (file-name-directory user-init-file) lirve--file-name-unresolved))
 
 (defun lirve--save-verb-unresolved (infinitive)
   "Save the verb unresolved to lirve--verbs-unresolved and to the file."
-  (setq lirve--verbs-unresolved (cons infinitive lirve--verbs-unresolved))
-  (with-temp-file (concat (file-name-directory user-init-file) lirve--file-name-unresolved)
+  (when infinitive
+    (progn
+      (setq lirve--verbs-unresolved (delete-dups (append lirve--verbs-unresolved (list infinitive))))
+     (with-temp-file (lirve--full-path-unresolved)
+       (prin1 lirve--verbs-unresolved (current-buffer))))))
+
+(defun lirve--remove-verb-unresolved (infinitive)
+  "Remove the verb unresolved from lirve--verbs-unresolved and from the file."
+  (setq lirve--verbs-unresolved (delete infinitive lirve--verbs-unresolved))
+  (with-temp-file (lirve--full-path-unresolved)
     (prin1 lirve--verbs-unresolved (current-buffer))))
+
+(defun lirve--load-verbs-unresolved ()
+  "Load the unresolved verbs from the file."
+  (when (file-exists-p (lirve--full-path-unresolved))
+    (with-temp-buffer
+      (insert-file-contents (lirve--full-path-unresolved))
+      (setq lirve--verbs-unresolved (read (current-buffer))))))
 
 (defun lirve--value-field-simple-past ()
   "Get the value of the simple past."
@@ -91,15 +131,25 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 
 (defun lirve--set-verb-to-learn ()
   "Set the verb to learn."
+  ;; If the list is empty, shuffle it
   (when (null lirve--verbs-shuffle)
     (setq lirve--verbs-shuffle (lirve--shuffle lirve--verbs)))
-  (let ((verb-to-learn  (car lirve--verbs-shuffle)))
+  ;; Get verb
+  (let* ((turn-unresolved (not (lirve--it-have-decimals (/ (float lirve--count-verbs) lirve--interval-unresolved)))) ;; Calculate if it is time to show unresolved verbs: Count / Interval. If it isn't a decimal, it is time to show unresolved verbs
+	 (verb-to-learn
+	  (if (and lirve--verbs-unresolved turn-unresolved)
+	      (lirve--get-verb-for-infinitive (car lirve--verbs-unresolved))
+	    (car lirve--verbs-shuffle))))
     (setq lirve--verb-to-learn-infinitive (alist-get 'infinitive verb-to-learn))
     (setq lirve--verb-to-learn-simple-past (alist-get 'simple-past verb-to-learn))
     (setq lirve--verb-to-learn-past-participle (alist-get 'past-participle verb-to-learn))
     (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verb-to-learn))))
     ;; Remove the verb from the list
-    (setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
+    (if turn-unresolved
+	(lirve--remove-verb-unresolved verb-to-learn)
+      (setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
+  ;; Increase the count of verbs
+  (setq lirve--count-verbs (1+ lirve--count-verbs)))
 
 (defun lirve--format-value-infinitive ()
   "Format the value of the infinitive."
@@ -311,6 +361,7 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 (defun learning-irregular-verbs-in-english ()
   "Application to learn and review irregular verbs in English."
   (interactive)
+  (lirve--load-verbs-unresolved)
   (lirve--main-layout)
   (lirve--start)
   (widget-backward 4))
