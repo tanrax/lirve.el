@@ -96,6 +96,12 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
       lirve--verbs
   )))
 
+(defun lirve--is-win ()
+  "Return t if the state is win."
+  (and
+   (string= (lirve--value-field-simple-past) lirve--verb-to-learn-simple-past)
+   (string= (lirve--value-field-past-participle) lirve--verb-to-learn-past-participle)))
+
 (defun lirve--full-path-unresolved ()
   "Get the full path of the unresolved file."
   (concat (file-name-directory user-init-file) lirve--file-name-unresolved))
@@ -145,9 +151,8 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
     (setq lirve--verb-to-learn-past-participle (alist-get 'past-participle verb-to-learn))
     (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verb-to-learn))))
     ;; Remove the verb from the list
-    (if turn-unresolved
-	(lirve--remove-verb-unresolved verb-to-learn)
-      (setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
+    (when (not turn-unresolved)
+	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
   ;; Increase the count of verbs
   (setq lirve--count-verbs (1+ lirve--count-verbs)))
 
@@ -234,6 +239,7 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   "Make the button check."
   (setq lirve--widget-button-check (widget-create 'push-button
 						 :notify (lambda (&rest ignore)
+							   (setq lirve--is-resolve (lirve--is-win))
 							   (lirve--update))
 						 lirve--text-button-check)))
 (defun lirve--make-space-after-check ()
@@ -243,14 +249,17 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 
 (defun lirve--show-solutions ()
   "Show solutions"
+  ;; Show the solutions
   (widget-value-set lirve--widget-field-simple-past lirve--verb-to-learn-simple-past)
   (widget-value-set lirve--widget-field-past-participle lirve--verb-to-learn-past-participle)
-  (lirve--save-verb-unresolved lirve--verb-to-learn-infinitive))
+  ;; Set state to lose
+  (setq lirve--is-resolve nil))
 
 (defun lirve--make-button-show-solution ()
   "Make the button show solution."
   (setq lirve--widget-button-show-solution (widget-create 'push-button
 							 :notify (lambda (&rest ignore)
+								   (setq lirve--is-resolve (lirve--is-win))
 								   (lirve--show-solutions)
 								   (lirve--update))
 							 lirve--text-button-show-solution)))
@@ -291,8 +300,7 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   (when (and (eq lirve--state 1)
 	     (or
 	      (not (string= (lirve--value-field-simple-past) ""))
-	      (not (string= (lirve--value-field-past-participle) "")))
-	     )
+	      (not (string= (lirve--value-field-past-participle) ""))))
     (setq lirve--state 2))
   ;; Check the answers
   (when (eq lirve--state 2)
@@ -300,14 +308,17 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
     (when (and
 	   (string= (lirve--value-field-simple-past) lirve--verb-to-learn-simple-past)
 	   (string= (lirve--value-field-past-participle) lirve--verb-to-learn-past-participle))
+      ;; Add or remove from unresolved list
+      (if lirve--is-resolve
+	  (lirve--remove-verb-unresolved lirve--verb-to-learn-infinitive)
+	(lirve--save-verb-unresolved lirve--verb-to-learn-infinitive))
       ;; Set the lirve--state
       (setq lirve--state 3))
     ;; Update the check labels
     (widget-value-set lirve--widget-label-check-simple-past (lirve--format-check-simple-past))
     (widget-value-set lirve--widget-label-check-past-participle (lirve--format-check-past-participle)))
   ;; Update the success layout if needed
-  (lirve--toggle-layout-finish)
-  (setq lirve--is-resolve t))
+  (lirve--toggle-layout-finish))
 
 (defun lirve--main-layout ()
   "Make widgets for the main layout."
