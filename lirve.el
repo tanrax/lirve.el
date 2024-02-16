@@ -1,4 +1,4 @@
-;;; lirve.el --- Application to learn and review irregular verbs in English. -*- lexical-binding: t -*-
+;;; lirve.el --- Learn irregular verbs in English. -*- lexical-binding: t
 ;;
 ;; Copyright © 2024 Andros Fenollosa
 ;; Authors: Andros Fenollosa <andros@fenollosa.email>
@@ -65,8 +65,7 @@
 (defun lirve--it-have-decimals (num)
   "Return t if NUM is have decimals."
   (let ((my-num (if (and
-		     (stringp num)
-		     ) ;; Return 0 if it is not a number
+		     (stringp num)) ;; Return 0 if it is not a number
 		    (string-to-number num) num)))
     (when my-num (not (or (zerop my-num)    ;; Check if it is 0
 			  (integerp my-num) ;; Check if it is integer
@@ -92,9 +91,8 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 (defun lirve--get-verb-for-infinitive (infinitive)
   "Get the verb for the infinitive."
   (car (seq-filter
-      (lambda (verb) (string= infinitive (alist-get 'infinitive verb)))
-      lirve--verbs
-  )))
+      (lambda (verb) (string= infinitive (cdr (assq 'infinitive verb))))
+      lirve-verbs--list)))
 
 (defun lirve--is-win ()
   "Return t if the state is win."
@@ -139,17 +137,17 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   "Set the verb to learn."
   ;; If the list is empty, shuffle it
   (when (null lirve--verbs-shuffle)
-    (setq lirve--verbs-shuffle (lirve--shuffle lirve--verbs)))
+    (setq lirve--verbs-shuffle (lirve--shuffle lirve-verbs--list)))
   ;; Get verb
   (let* ((turn-unresolved (not (lirve--it-have-decimals (/ (float lirve--count-verbs) lirve--interval-unresolved)))) ;; Calculate if it is time to show unresolved verbs: Count / Interval. If it isn't a decimal, it is time to show unresolved verbs
 	 (verb-to-learn
 	  (if (and lirve--verbs-unresolved turn-unresolved)
 	      (lirve--get-verb-for-infinitive (car lirve--verbs-unresolved))
 	    (car lirve--verbs-shuffle))))
-    (setq lirve--verb-to-learn-infinitive (alist-get 'infinitive verb-to-learn))
-    (setq lirve--verb-to-learn-simple-past (alist-get 'simple-past verb-to-learn))
-    (setq lirve--verb-to-learn-past-participle (alist-get 'past-participle verb-to-learn))
-    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (alist-get learning-irregular-verbs-in-English--show-translation (alist-get 'translations verb-to-learn))))
+    (setq lirve--verb-to-learn-infinitive (cdr (assq 'infinitive verb-to-learn)))
+    (setq lirve--verb-to-learn-simple-past (cdr (assq 'simple-past verb-to-learn)))
+    (setq lirve--verb-to-learn-past-participle (cdr (assq 'past-participle verb-to-learn)))
+    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (cdr (assq learning-irregular-verbs-in-English--show-translation (cdr (assq 'translations verb-to-learn))))))
     ;; Remove the verb from the list
     (when (not turn-unresolved)
 	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
@@ -221,19 +219,16 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 	;; Quit button
 	(setq lirve--widget-button-quit (widget-create 'push-button
 						      :size 20
-						      :notify (lambda (&rest ignore)
-								(lirve--kill-app))
+						      :notify (lambda (&rest ignore) (lirve--kill-app))
 						      lirve--text-button-quit))
-	(widget-backward 2)
-	)
+	(widget-backward 2))
     (progn
       (when (not (eq lirve--widget-item-space-before-success nil)) (widget-delete lirve--widget-item-space-before-success))
       (when (not (eq lirve--widget-message-success nil)) (widget-delete lirve--widget-message-success))
       (when (not (eq lirve--widget-item-space-after-success nil)) (widget-delete lirve--widget-item-space-after-success))
       (when (not (eq lirve--widget-button-lirve--replay nil)) (widget-delete lirve--widget-button-lirve--replay))
       (when (not (eq lirve--widget-item-space-between-buttons nil)) (widget-delete lirve--widget-item-space-between-buttons))
-      (when (not (eq lirve--widget-button-quit nil)) (widget-delete lirve--widget-button-quit))
-      )))
+      (when (not (eq lirve--widget-button-quit nil)) (widget-delete lirve--widget-button-quit)))))
 
 (defun lirve--make-button-check ()
   "Make the button check."
@@ -334,18 +329,17 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   (insert (propertize (format "\n%s\n\n" lirve--text-title) 'face '(:height 1.2 :weight bold)))
   ;; Verb in infinitive
   (setq lirve--widget-item-verb (widget-create 'item
-									     :value ""))
+					       :value ""))
   ;; Separator
   (insert "\nSimple past     ➡️ ")
   ;; Simple past
   (setq lirve--widget-field-simple-past (widget-create 'editable-field
-										     :size 8
-										     :help-echo "Type a Simple past"
-										     ))
+						       :size 8
+						       :help-echo "Type a Simple past"))
   ;; Label check
   (insert " ")
   (setq lirve--widget-label-check-simple-past (widget-create 'item
-											   (lirve--format-check-simple-past)))
+							     (lirve--format-check-simple-past)))
   ;; Separator
   (insert "\nPast participle ➡️ ")
   ;; Past participle
@@ -369,7 +363,7 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   (widget-setup))
 
 ;; Init
-(defun learning-irregular-verbs-in-english ()
+(defun lirve ()
   "Application to learn and review irregular verbs in English."
   (interactive)
   (lirve--load-verbs-unresolved)

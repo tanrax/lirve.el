@@ -34,10 +34,19 @@ Only available in Spanish (at the moment).
 (setq lirve--show-translation 'es)
 ```
 
+I also recommend creating a function to make it easier to remember the command.
+
+```elisp
+(defun learning-irregular-verbs-in-english ()
+  "Start Lirve."
+  (interactive)
+  (lirve))
+```
+
 ## Usage
 
 ```
-M-x learning-irregular-verbs-in-english
+M-x lirve
 ```
 
 ## Controls

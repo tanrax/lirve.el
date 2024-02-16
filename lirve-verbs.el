@@ -1,4 +1,4 @@
-;;; lirve-verbs.el --- Verb list for learning irregular verbs in English -*- lexical-binding: t; -*-
+;;; lirve-verbs.el --- Verb list for learning irregular verbs in English
 ;;
 ;; Copyright © 2024 Andros Fenollosa
 ;; Authors: Andros Fenollosa <andros@fenollosa.email>
@@ -11,7 +11,7 @@
 
 ;;; Code:
 
-(defvar lirve--verbs '(
+(defvar lirve-verbs--list '(
 		       (
 			(infinitive . "beat")
 			(simple-past . "beat")
