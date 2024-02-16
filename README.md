@@ -16,6 +16,12 @@ Then, add it to your `init.el`.
   :ensure t)
 ```
 
+And add the following to your `init.el`:
+
+```elisp
+(require 'lirve)
+```
+
 ## Configure (Optional)
 
 Shows the translation of the verb when resolving or failing.
