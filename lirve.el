@@ -5,6 +5,7 @@
 ;; URL: https://github.com/tanrax/learning-irregular-verbs-in-English.el
 ;; Version: 1.2.0
 ;; SPDX-License-Identifier: GPL-3.0-or-later
+;; Package-Requires: ((emacs "25.1"))
 
 ;;; Commentary:
 ;; Application to learn and review irregular verbs in English.
@@ -72,24 +73,27 @@
 			  (and (floatp my-num) (equal my-num (float (truncate my-num)))) ;; Check if it is float
 			  )))))
 
-(defun lirve--shuffle (originalList &optional shuffledList)
-  "Applies the Fisher-Yates shuffle algorithm to a list.
-Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
-  (if (null originalList)
+(defun lirve--shuffle (original-list &optional shuffled-list)
+  "Apply the Fisher-Yates shuffle algorithm.
+The parameter SHUFFLED-LIST is used for recursion
+and should not be used by the user.
+Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)
+Argument ORIGINAL-LIST List to shuffle."
+  (if (null original-list)
       ;; End recursion, return the shuffled list
-      shuffledList
+      shuffled-list
     ;; Otherwise, continue with the logic
-    (let* ((randomPosition (random (length originalList)))
-           (randomElement (nth randomPosition originalList))
+    (let* ((random-position (random (length original-list)))
+           (random-element (nth random-position original-list))
            ;; Create a new original list without the randomly selected element
-           (originalListWithoutRandomElement (append (cl-subseq originalList 0 randomPosition) (nthcdr (1+ randomPosition) originalList)))
+           (original-list-without-random-element (append (cl-subseq original-list 0 random-position) (nthcdr (1+ random-position) original-list)))
            ;; Create a new shuffled list with the selected element at the beginning
-           (newShuffledList (if (null shuffledList) (list randomElement) (cons randomElement shuffledList))))
+           (new-shuffled-list (if (null shuffled-list) (list random-element) (cons random-element shuffled-list))))
       ;; Recursively call the shuffle function with the new original list and the new shuffled list
-      (lirve--shuffle originalListWithoutRandomElement newShuffledList))))
+      (lirve--shuffle original-list-without-random-element new-shuffled-list))))
 
 (defun lirve--get-verb-for-infinitive (infinitive)
-  "Get the verb for the infinitive."
+  "Get the verb for the INFINITIVE."
   (car (seq-filter
       (lambda (verb) (string= infinitive (cdr (assq 'infinitive verb))))
       lirve-verbs--list)))
@@ -105,7 +109,8 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
   (concat (file-name-directory user-init-file) lirve--file-name-unresolved))
 
 (defun lirve--save-verb-unresolved (infinitive)
-  "Save the verb unresolved to lirve--verbs-unresolved and to the file."
+  "Save the verb unresolved to `lirve--verbs-unresolved' and to the file.
+Argument INFINITIVE is verb to learn."
   (when infinitive
     (progn
       (setq lirve--verbs-unresolved (delete-dups (append lirve--verbs-unresolved (list infinitive))))
@@ -113,7 +118,8 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
        (prin1 lirve--verbs-unresolved (current-buffer))))))
 
 (defun lirve--remove-verb-unresolved (infinitive)
-  "Remove the verb unresolved from lirve--verbs-unresolved and from the file."
+  "Remove the verb unresolved from `lirve--verbs-unresolved' and from the file.
+Argument INFINITIVE verb to remove."
   (setq lirve--verbs-unresolved (delete infinitive lirve--verbs-unresolved))
   (with-temp-file (lirve--full-path-unresolved)
     (prin1 lirve--verbs-unresolved (current-buffer))))
@@ -179,7 +185,7 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 		      lirve--emoji-valid lirve--emoji-error))))
 
 (defun lirve--show-translation ()
-  "Show translation if learning-irregular-verbs-in-English--show-translation is t"
+  "Show translation if `learning-irregular-verbs-in-English--show-translation' is t."
   (when (not (null lirve--translation))
     (widget-value-set lirve--widget-item-verb (concat (lirve--format-value-infinitive) "   🇪🇸 " lirve--translation))))
 
@@ -238,12 +244,12 @@ Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)"
 							   (lirve--update))
 						 lirve--text-button-check)))
 (defun lirve--make-space-after-check ()
-  "Add space between Button check and Button show solution"
+  "Add space between Button check and Button show solution."
   (setq lirve--widget-item-space-before-check (widget-create 'item "\n")))
 
 
 (defun lirve--show-solutions ()
-  "Show solutions"
+  "Show solutions."
   ;; Show the solutions
   (widget-value-set lirve--widget-field-simple-past lirve--verb-to-learn-simple-past)
   (widget-value-set lirve--widget-field-past-participle lirve--verb-to-learn-past-participle)
