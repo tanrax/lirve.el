@@ -30,6 +30,7 @@
 (defvar lirve--verb-to-learn-simple-past nil)
 (defvar lirve--verb-to-learn-past-participle nil)
 (defvar lirve--translation "")
+(defvar lirve--set-translation) ;; Set the translation language
 (defvar lirve--emoji-valid "✅")
 (defvar lirve--emoji-error "👎")
 (defvar lirve--widget-title nil)
@@ -153,7 +154,7 @@ Argument INFINITIVE verb to remove."
     (setq lirve--verb-to-learn-infinitive (cdr (assq 'infinitive verb-to-learn)))
     (setq lirve--verb-to-learn-simple-past (cdr (assq 'simple-past verb-to-learn)))
     (setq lirve--verb-to-learn-past-participle (cdr (assq 'past-participle verb-to-learn)))
-    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (cdr (assq lirve--show-translation (cdr (assq 'translations verb-to-learn))))))
+    (when lirve--set-translation (setq lirve--translation (cdr (assq lirve--set-translation (cdr (assq 'translations verb-to-learn))))))
     ;; Remove the verb from the list
     (when (not turn-unresolved)
 	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))

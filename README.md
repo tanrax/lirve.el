@@ -31,7 +31,7 @@ Shows the translation of the verb when resolving or failing.
 Only available in Spanish (at the moment).
 
 ```elisp
-(setq lirve--show-translation 'es)
+(setq lirve--set-translation 'es)
 ```
 
 I also recommend creating a function to make it easier to remember the command.
