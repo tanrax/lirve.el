@@ -154,7 +154,7 @@ Argument INFINITIVE verb to remove."
     (setq lirve--verb-to-learn-infinitive (cdr (assq 'infinitive verb-to-learn)))
     (setq lirve--verb-to-learn-simple-past (cdr (assq 'simple-past verb-to-learn)))
     (setq lirve--verb-to-learn-past-participle (cdr (assq 'past-participle verb-to-learn)))
-    (when lirve--set-translation (setq lirve--translation (cdr (assq lirve--set-translation (cdr (assq 'translations verb-to-learn))))))
+    (when (not (null lirve--set-translation)) (setq lirve--translation (cdr (assq lirve--set-translation (cdr (assq 'translations verb-to-learn))))))
     ;; Remove the verb from the list
     (when (not turn-unresolved)
 	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
@@ -228,7 +228,7 @@ Argument INFINITIVE verb to remove."
 						      :size 20
 						      :notify (lambda (&rest ignore) (lirve--kill-app))
 						      lirve--text-button-quit))
-	(widget-backward 2))
+	(eval-when-compile (widget-backward 2)))
     (progn
       (when (not (eq lirve--widget-item-space-before-success nil)) (widget-delete lirve--widget-item-space-before-success))
       (when (not (eq lirve--widget-message-success nil)) (widget-delete lirve--widget-message-success))
@@ -293,7 +293,7 @@ Argument INFINITIVE verb to remove."
   "Replay the challenge."
   (interactive)
   (lirve--start)
-  (widget-backward 1))
+  (eval-when-compile (widget-backward 1)))
 
 (defun lirve--update ()
   "Update state and show temps layouts."
@@ -376,7 +376,7 @@ Argument INFINITIVE verb to remove."
   (lirve--load-verbs-unresolved)
   (lirve--main-layout)
   (lirve--start)
-  (widget-backward 4))
+  (eval-when-compile (widget-backward 4)))
 
 (provide 'lirve)
 
