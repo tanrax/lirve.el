@@ -134,11 +134,11 @@ Argument INFINITIVE verb to remove."
 
 (defun lirve--value-field-simple-past ()
   "Get the value of the simple past."
-  (if (not (eq lirve--widget-field-simple-past nil)) (widget-value lirve--widget-field-simple-past) ""))
+  (if lirve--widget-field-simple-past (widget-value lirve--widget-field-simple-past) ""))
 
 (defun lirve--value-field-past-participle ()
   "Get the value of the past participle."
-  (if (not (eq lirve--widget-field-past-participle nil)) (widget-value lirve--widget-field-past-participle) ""))
+  (if lirve--widget-field-past-participle (widget-value lirve--widget-field-past-participle) ""))
 
 (defun lirve--set-verb-to-learn ()
   "Set the verb to learn."
@@ -154,7 +154,7 @@ Argument INFINITIVE verb to remove."
     (setq lirve--verb-to-learn-infinitive (cdr (assq 'infinitive verb-to-learn)))
     (setq lirve--verb-to-learn-simple-past (cdr (assq 'simple-past verb-to-learn)))
     (setq lirve--verb-to-learn-past-participle (cdr (assq 'past-participle verb-to-learn)))
-    (when (not (null lirve--set-translation)) (setq lirve--translation (cdr (assq lirve--set-translation (cdr (assq 'translations verb-to-learn))))))
+    (when lirve--set-translation (setq lirve--translation (cdr (assq lirve--set-translation (cdr (assq 'translations verb-to-learn))))))
     ;; Remove the verb from the list
     (when (not turn-unresolved)
 	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
@@ -230,12 +230,12 @@ Argument INFINITIVE verb to remove."
 						      lirve--text-button-quit))
 	(widget-backward 2))
     (progn
-      (when (not (eq lirve--widget-item-space-before-success nil)) (widget-delete lirve--widget-item-space-before-success))
-      (when (not (eq lirve--widget-message-success nil)) (widget-delete lirve--widget-message-success))
-      (when (not (eq lirve--widget-item-space-after-success nil)) (widget-delete lirve--widget-item-space-after-success))
-      (when (not (eq lirve--widget-button-lirve--replay nil)) (widget-delete lirve--widget-button-lirve--replay))
-      (when (not (eq lirve--widget-item-space-between-buttons nil)) (widget-delete lirve--widget-item-space-between-buttons))
-      (when (not (eq lirve--widget-button-quit nil)) (widget-delete lirve--widget-button-quit)))))
+      (when lirve--widget-item-space-before-success (widget-delete lirve--widget-item-space-before-success))
+      (when lirve--widget-message-success (widget-delete lirve--widget-message-success))
+      (when lirve--widget-item-space-after-success (widget-delete lirve--widget-item-space-after-success))
+      (when lirve--widget-button-lirve--replay (widget-delete lirve--widget-button-lirve--replay))
+      (when lirve--widget-item-space-between-buttons (widget-delete lirve--widget-item-space-between-buttons))
+      (when lirve--widget-button-quit (widget-delete lirve--widget-button-quit)))))
 
 (defun lirve--make-button-check ()
   "Make the button check."
@@ -276,11 +276,11 @@ Argument INFINITIVE verb to remove."
   ;; Show the verb in infinitive
   (widget-value-set lirve--widget-item-verb (lirve--format-value-infinitive))
   ;; Reset button check
-  (when (eq lirve--widget-button-check nil) (lirve--make-button-check))
+  (when (not lirve--widget-button-check) (lirve--make-button-check))
   ;; Reset space after check
-  (when (eq lirve--widget-item-space-before-check nil) (lirve--make-space-after-check))
+  (when (not lirve--widget-item-space-before-check) (lirve--make-space-after-check))
   ;; Reset button show solution
-  (when (eq lirve--widget-button-show-solution nil) (lirve--make-button-show-solution))
+  (when (not lirve--widget-button-show-solution) (lirve--make-button-show-solution))
   ;; Clear the fields
   (widget-value-set lirve--widget-field-simple-past "")
   (widget-value-set lirve--widget-label-check-simple-past "")
