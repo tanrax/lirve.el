@@ -77,7 +77,7 @@
   "Apply the Fisher-Yates shuffle algorithm.
 The parameter SHUFFLED-LIST is used for recursion
 and should not be used by the user.
-Example: (lirve--shuffle '(1 2 3 4 5)) => (3 1 5 2 4)
+Example: (lirve--shuffle (list (1 2 3 4 5))) -> (3 1 5 2 4)
 Argument ORIGINAL-LIST List to shuffle."
   (if (null original-list)
       ;; End recursion, return the shuffled list
@@ -153,7 +153,7 @@ Argument INFINITIVE verb to remove."
     (setq lirve--verb-to-learn-infinitive (cdr (assq 'infinitive verb-to-learn)))
     (setq lirve--verb-to-learn-simple-past (cdr (assq 'simple-past verb-to-learn)))
     (setq lirve--verb-to-learn-past-participle (cdr (assq 'past-participle verb-to-learn)))
-    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (cdr (assq learning-irregular-verbs-in-English--show-translation (cdr (assq 'translations verb-to-learn))))))
+    (when (not (null (boundp 'learning-irregular-verbs-in-English--show-translation))) (setq lirve--translation (cdr (assq lirve--show-translation (cdr (assq 'translations verb-to-learn))))))
     ;; Remove the verb from the list
     (when (not turn-unresolved)
 	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
@@ -185,7 +185,7 @@ Argument INFINITIVE verb to remove."
 		      lirve--emoji-valid lirve--emoji-error))))
 
 (defun lirve--show-translation ()
-  "Show translation if `learning-irregular-verbs-in-English--show-translation' is t."
+  "Show translation if `lirve--show-translation' is t."
   (when (not (null lirve--translation))
     (widget-value-set lirve--widget-item-verb (concat (lirve--format-value-infinitive) "   🇪🇸 " lirve--translation))))
 

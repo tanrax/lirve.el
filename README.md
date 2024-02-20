@@ -11,7 +11,7 @@ You need to have `straight` installed.
 Then, add it to your `init.el`.
 
 ```elisp
-(use-package learning-irregular-verbs-in-english
+(use-package lirve
   :straight (:host github :repo "tanrax/learning-irregular-verbs-in-english.el" :files ("lirve-verbs.el" "lirve.el"))
   :ensure t)
 ```
