@@ -228,7 +228,7 @@ Argument INFINITIVE verb to remove."
 						      :size 20
 						      :notify (lambda (&rest ignore) (lirve--kill-app))
 						      lirve--text-button-quit))
-	(eval-when-compile (widget-backward 2)))
+	(widget-backward 2))
     (progn
       (when (not (eq lirve--widget-item-space-before-success nil)) (widget-delete lirve--widget-item-space-before-success))
       (when (not (eq lirve--widget-message-success nil)) (widget-delete lirve--widget-message-success))
@@ -293,7 +293,7 @@ Argument INFINITIVE verb to remove."
   "Replay the challenge."
   (interactive)
   (lirve--start)
-  (eval-when-compile (widget-backward 1)))
+  (widget-backward 1))
 
 (defun lirve--update ()
   "Update state and show temps layouts."
@@ -376,7 +376,7 @@ Argument INFINITIVE verb to remove."
   (lirve--load-verbs-unresolved)
   (lirve--main-layout)
   (lirve--start)
-  (eval-when-compile (widget-backward 4)))
+  (widget-backward 4))
 
 (provide 'lirve)
 
