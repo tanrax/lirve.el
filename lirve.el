@@ -30,7 +30,7 @@
 (defvar lirve--verb-to-learn-simple-past nil)
 (defvar lirve--verb-to-learn-past-participle nil)
 (defvar lirve--translation "")
-(defvar lirve--set-translation) ;; Set the translation language
+(defvar lirve--set-translation nil) ;; Set the translation language
 (defvar lirve--emoji-valid "✅")
 (defvar lirve--emoji-error "👎")
 (defvar lirve--widget-title nil)
@@ -187,7 +187,7 @@ Argument INFINITIVE verb to remove."
 
 (defun lirve--show-translation ()
   "Show translation if `lirve--show-translation' is t."
-  (when (not (null lirve--translation))
+  (when lirve--set-translation
     (widget-value-set lirve--widget-item-verb (concat (lirve--format-value-infinitive) "   🇪🇸 " lirve--translation))))
 
 (defun lirve--toggle-layout-finish ()
