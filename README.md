@@ -12,7 +12,7 @@ Then, add it to your `init.el`.
 
 ```elisp
 (use-package lirve
-  :straight (:host github :repo "tanrax/learning-irregular-verbs-in-english.el" :files ("lirve-verbs.el" "lirve.el"))
+  :straight (:host github :repo "tanrax/lirve.el" :files ("lirve-verbs.el" "lirve.el"))
   :ensure t)
 ```
 
