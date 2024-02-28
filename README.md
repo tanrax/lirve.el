@@ -34,6 +34,12 @@ Only available in Spanish (at the moment).
 (setq lirve--set-translation 'es)
 ```
 
+## Usage
+
+```
+M-x lirve
+```
+
 I also recommend creating a function to make it easier to remember the command.
 
 ```elisp
@@ -43,10 +49,8 @@ I also recommend creating a function to make it easier to remember the command.
   (lirve))
 ```
 
-## Usage
-
 ```
-M-x lirve
+M-x learning-irregular-verbs-in-english
 ```
 
 ## Controls
