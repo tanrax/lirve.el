@@ -15,6 +15,7 @@
 ;; Imports
 (require 'lirve-verbs)
 (require 'widget)
+(require 'wid-edit)
 (eval-when-compile
   (require 'wid-edit))
 
