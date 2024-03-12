@@ -368,6 +368,8 @@ Argument INFINITIVE verb to remove."
   (lirve--make-button-show-solution)
   ;; Display the buffer
   (use-local-map widget-keymap)
+  ;; Disable line numbers
+  (display-line-numbers-mode -1)
   (widget-setup))
 
 ;; Init
