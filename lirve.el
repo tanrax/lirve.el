@@ -5,7 +5,7 @@
 ;; URL: https://github.com/tanrax/lirve.el
 ;; Version: 1.2.0
 ;; SPDX-License-Identifier: GPL-3.0-or-later
-;; Package-Requires: ((emacs "25.1"))
+;; Package-Requires: ((emacs "26.1"))
 
 ;;; Commentary:
 ;; Application to learn and review irregular verbs in English.
