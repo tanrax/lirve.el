@@ -7,11 +7,11 @@
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
-;; This file contains a list of irregular verbs in English, with their
+;; This file contains a list of irregular verbs in English
 
 ;;; Code:
 
-(defvar lirve-verbs--list '(
+(defconst lirve-verbs--list '(
 		       (
 			(infinitive . "beat")
 			(simple-past . "beat")

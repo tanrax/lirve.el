@@ -23,17 +23,17 @@
 (defvar lirve--count-verbs 0) ;; It's used to know when unresolved verbs are shown
 (defvar lirve--interval-unresolved 3) ;; Interval to show unresolved verbs
 (defvar lirve--verbs-shuffle '())
-(defvar lirve--file-name-unresolved ".lirve-unresolved")
+(defconst lirve--file-name-unresolved ".lirve-unresolved")
 (defvar lirve--verbs-unresolved '())
-(defvar lirve--buffer-name "*Learning irregular verbs in English*")
-(defvar lirve--state 1) ;; 1: lirve--start, 2: playing (before first check), 3: win (show success layout)
+(defconst lirve--buffer-name "*Learning irregular verbs in English*")
+(defvar lirve--state :start) ;; :start -> Init, :playing before first check, :win show success layout
 (defvar lirve--verb-to-learn-infinitive nil)
 (defvar lirve--verb-to-learn-simple-past nil)
 (defvar lirve--verb-to-learn-past-participle nil)
 (defvar lirve--translation "")
 (defvar lirve--set-translation nil) ;; Set the translation language
-(defvar lirve--emoji-valid "✅")
-(defvar lirve--emoji-error "👎")
+(defconst lirve--emoji-valid "✅")
+(defconst lirve--emoji-error "👎")
 (defvar lirve--widget-title nil)
 (defvar lirve--text-title " 🧑‍🎓 Learning irregular verbs in English 🇬🇧")
 (defvar lirve--widget-item-verb nil)
@@ -41,26 +41,26 @@
 (defvar lirve--widget-label-check-simple-past nil)
 (defvar lirve--widget-field-past-participle nil)
 (defvar lirve--widget-label-check-past-participle nil)
-(defvar lirve--text-button-check "Check")
+(defconst lirve--text-button-check "Check")
 (defvar lirve--widget-button-check nil)
 (defvar lirve--widget-item-space-before-check nil)
-(defvar lirve--text-button-show-solution "Don't know")
+(defconst lirve--text-button-show-solution "Don't know")
 (defvar lirve--widget-button-show-solution nil)
 (defvar lirve--widget-message-success nil)
 (defvar lirve--widget-item-space-before-success nil)
-(defvar lirve--text-success "Nice!")
-(defvar lirve--text-fail "Next time you will do better")
-(defvar lirve--is-resolve t)
+(defconst lirve--text-success "Nice!")
+(defconst lirve--text-fail "Next time you will do better")
+(defvar lirve--resolved-p t)
 (defvar lirve--widget-item-space-after-success nil)
 (defvar lirve--widget-button-quit nil)
-(defvar lirve--text-button-quit "Quit")
+(defconst lirve--text-button-quit "Quit")
 (defvar lirve--widget-item-space-between-buttons nil)
 (defvar lirve--widget-button-lirve--replay nil)
-(defvar lirve--text-button-lirve--replay "New challenge")
+(defconst lirve--text-button-lirve--replay "New challenge")
 
 ;; Functions
 
-(defun lirve--kill-app ()
+(defun lirve-kill-app ()
   "Kill the application."
   (interactive)
   (kill-buffer lirve--buffer-name))
@@ -168,7 +168,7 @@ Argument INFINITIVE verb to remove."
 
 (defun lirve--format-check-simple-past ()
   "Format the value of the simple past."
-  (if (eq lirve--state 1)
+  (if (eq lirve--state :start)
       ""
     (format " %s" (if
 		      (and
@@ -178,7 +178,7 @@ Argument INFINITIVE verb to remove."
 
 (defun lirve--format-check-past-participle ()
   "Format the value of the past participle."
-  (if (eq lirve--state 1)
+  (if (eq lirve--state :start)
       ""
     (format " %s" (if
 		      (and
@@ -193,7 +193,7 @@ Argument INFINITIVE verb to remove."
 
 (defun lirve--toggle-layout-finish ()
   "Toggle the layout to success."
-  (if (eq lirve--state 3)
+  (if (eq lirve--state :win)
       (progn
 	;; Show translate
 	(lirve--show-translation)
@@ -212,7 +212,7 @@ Argument INFINITIVE verb to remove."
 	(setq lirve--widget-item-space-before-success (widget-create 'item
 								    ""))
 	(setq lirve--widget-message-success (widget-create 'item
-							  (if lirve--is-resolve lirve--text-success lirve--text-fail)))
+							  (if lirve--resolved-p lirve--text-success lirve--text-fail)))
 	(setq lirve--widget-item-space-after-success (widget-create 'item
 								   "\n"))
 	;; Lirve--Replay button
@@ -227,7 +227,7 @@ Argument INFINITIVE verb to remove."
 	;; Quit button
 	(setq lirve--widget-button-quit (widget-create 'push-button
 						      :size 20
-						      :notify (lambda (&rest ignore) (lirve--kill-app))
+						      :notify (lambda (&rest ignore) (lirve-kill-app))
 						      lirve--text-button-quit))
 	(widget-backward 2))
     (progn
@@ -242,7 +242,7 @@ Argument INFINITIVE verb to remove."
   "Make the button check."
   (setq lirve--widget-button-check (widget-create 'push-button
 						 :notify (lambda (&rest ignore)
-							   (setq lirve--is-resolve (lirve--is-win))
+							   (setq lirve--resolved-p (lirve--is-win))
 							   (lirve--update))
 						 lirve--text-button-check)))
 (defun lirve--make-space-after-check ()
@@ -256,13 +256,13 @@ Argument INFINITIVE verb to remove."
   (widget-value-set lirve--widget-field-simple-past lirve--verb-to-learn-simple-past)
   (widget-value-set lirve--widget-field-past-participle lirve--verb-to-learn-past-participle)
   ;; Set state to lose
-  (setq lirve--is-resolve nil))
+  (setq lirve--resolved-p nil))
 
 (defun lirve--make-button-show-solution ()
   "Make the button show solution."
   (setq lirve--widget-button-show-solution (widget-create 'push-button
 							 :notify (lambda (&rest ignore)
-								   (setq lirve--is-resolve (lirve--is-win))
+								   (setq lirve--resolved-p (lirve--is-win))
 								   (lirve--show-solutions)
 								   (lirve--update))
 							 lirve--text-button-show-solution)))
@@ -271,7 +271,7 @@ Argument INFINITIVE verb to remove."
 (defun lirve--start ()
   "Start challenge."
   ;; Set the lirve--state
-  (setq lirve--state 1)
+  (setq lirve--state :start)
   ;; Get a new verb
   (lirve--set-verb-to-learn)
   ;; Show the verb in infinitive
@@ -300,23 +300,23 @@ Argument INFINITIVE verb to remove."
   "Update state and show temps layouts."
   (interactive)
   ;; Is playing?
-  (when (and (eq lirve--state 1)
+  (when (and (eq lirve--state :start)
 	     (or
 	      (not (string= (lirve--value-field-simple-past) ""))
 	      (not (string= (lirve--value-field-past-participle) ""))))
-    (setq lirve--state 2))
+    (setq lirve--state :playing))
   ;; Check the answers
-  (when (eq lirve--state 2)
+  (when (eq lirve--state :playing)
     ;; Is win?
     (when (and
 	   (string= (lirve--value-field-simple-past) lirve--verb-to-learn-simple-past)
 	   (string= (lirve--value-field-past-participle) lirve--verb-to-learn-past-participle))
       ;; Add or remove from unresolved list
-      (if lirve--is-resolve
+      (if lirve--resolved-p
 	  (lirve--remove-verb-unresolved lirve--verb-to-learn-infinitive)
 	(lirve--save-verb-unresolved lirve--verb-to-learn-infinitive))
       ;; Set the lirve--state
-      (setq lirve--state 3))
+      (setq lirve--state :win))
     ;; Update the check labels
     (widget-value-set lirve--widget-label-check-simple-past (lirve--format-check-simple-past))
     (widget-value-set lirve--widget-label-check-past-participle (lirve--format-check-past-participle)))
