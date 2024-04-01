@@ -157,7 +157,7 @@ Argument INFINITIVE verb to remove."
     (setq lirve--verb-to-learn-past-participle (cdr (assq 'past-participle verb-to-learn)))
     (when lirve--set-translation (setq lirve--translation (cdr (assq lirve--set-translation (cdr (assq 'translations verb-to-learn))))))
     ;; Remove the verb from the list
-    (when (not turn-unresolved)
+    (unless turn-unresolved
 	(setq lirve--verbs-shuffle (cdr lirve--verbs-shuffle))))
   ;; Increase the count of verbs
   (setq lirve--count-verbs (1+ lirve--count-verbs)))
@@ -277,11 +277,11 @@ Argument INFINITIVE verb to remove."
   ;; Show the verb in infinitive
   (widget-value-set lirve--widget-item-verb (lirve--format-value-infinitive))
   ;; Reset button check
-  (when (not lirve--widget-button-check) (lirve--make-button-check))
+  (unless lirve--widget-button-check (lirve--make-button-check))
   ;; Reset space after check
-  (when (not lirve--widget-item-space-before-check) (lirve--make-space-after-check))
+  (unless lirve--widget-item-space-before-check (lirve--make-space-after-check))
   ;; Reset button show solution
-  (when (not lirve--widget-button-show-solution) (lirve--make-button-show-solution))
+  (unless lirve--widget-button-show-solution (lirve--make-button-show-solution))
   ;; Clear the fields
   (widget-value-set lirve--widget-field-simple-past "")
   (widget-value-set lirve--widget-label-check-simple-past "")
