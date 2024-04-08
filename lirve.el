@@ -9,6 +9,9 @@
 
 ;;; Commentary:
 ;; Application to learn and review irregular verbs in English.
+;; You can optionally configure Lirve to display translations.
+;; Only available in Spanish (at the moment).
+;; If you want to add more languages, make a PR with the translations in `lirve-verbs.el`.
 
 ;;; Code:
 
@@ -114,10 +117,9 @@ Argument ORIGINAL-LIST List to shuffle."
   "Save the verb unresolved to `lirve--verbs-unresolved' and to the file.
 Argument INFINITIVE is verb to learn."
   (when infinitive
-    (progn
-      (setq lirve--verbs-unresolved (delete-dups (append lirve--verbs-unresolved (list infinitive))))
-     (with-temp-file (lirve--full-path-unresolved)
-       (prin1 lirve--verbs-unresolved (current-buffer))))))
+    (setq lirve--verbs-unresolved (delete-dups (append lirve--verbs-unresolved (list infinitive))))
+    (with-temp-file (lirve--full-path-unresolved)
+      (prin1 lirve--verbs-unresolved (current-buffer)))))
 
 (defun lirve--remove-verb-unresolved (infinitive)
   "Remove the verb unresolved from `lirve--verbs-unresolved' and from the file.
@@ -230,13 +232,12 @@ Argument INFINITIVE verb to remove."
 						      :notify (lambda (&rest ignore) (lirve-kill-app))
 						      lirve--text-button-quit))
 	(widget-backward 2))
-    (progn
-      (when lirve--widget-item-space-before-success (widget-delete lirve--widget-item-space-before-success))
-      (when lirve--widget-message-success (widget-delete lirve--widget-message-success))
-      (when lirve--widget-item-space-after-success (widget-delete lirve--widget-item-space-after-success))
-      (when lirve--widget-button-lirve--replay (widget-delete lirve--widget-button-lirve--replay))
-      (when lirve--widget-item-space-between-buttons (widget-delete lirve--widget-item-space-between-buttons))
-      (when lirve--widget-button-quit (widget-delete lirve--widget-button-quit)))))
+    (when lirve--widget-item-space-before-success (widget-delete lirve--widget-item-space-before-success))
+    (when lirve--widget-message-success (widget-delete lirve--widget-message-success))
+    (when lirve--widget-item-space-after-success (widget-delete lirve--widget-item-space-after-success))
+    (when lirve--widget-button-lirve--replay (widget-delete lirve--widget-button-lirve--replay))
+    (when lirve--widget-item-space-between-buttons (widget-delete lirve--widget-item-space-between-buttons))
+    (when lirve--widget-button-quit (widget-delete lirve--widget-button-quit))))
 
 (defun lirve--make-button-check ()
   "Make the button check."
