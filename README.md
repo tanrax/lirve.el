@@ -67,7 +67,7 @@ If you want to add more languages, make a PR with the translations in `lirve-ver
 
 For example, the verb `beat` in Italian and Spanish:
 
-```ellisp
+```elisp
 (
     (infinitive . "beat")
     (simple-past . "beat")
