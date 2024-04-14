@@ -12,6 +12,12 @@ Lirve helps you learn irregular verbs using the spaced repetition technique. In 
 M-x package-install RET lirve RET
 ```
 
+And add the following to your `init.el`:
+
+```elisp
+(require 'lirve)
+```
+
 ### Straight
 
 Then, add it to your `init.el`.
