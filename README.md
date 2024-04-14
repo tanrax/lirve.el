@@ -6,7 +6,13 @@ Lirve helps you learn irregular verbs using the spaced repetition technique. In 
 
 ## Install
 
-You need to have `straight` installed.
+### MELPA
+
+```
+M-x package-install RET lirve RET
+```
+
+### Straight
 
 Then, add it to your `init.el`.
 
