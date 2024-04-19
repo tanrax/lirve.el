@@ -1,4 +1,4 @@
-;;; lirve.el --- Learn irregular verbs in English. -*- lexical-binding: t
+;;; lirve.el --- Learn irregular verbs in English. -*- lexical-binding: t -*-
 ;;
 ;; Copyright © 2024 Andros Fenollosa
 ;; Authors: Andros Fenollosa <andros@fenollosa.email>
